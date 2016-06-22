@@ -70,10 +70,10 @@ function init() {
     function processAudio(user){
         var aCtx = new AudioContext();
         var analyser = aCtx.createAnalyser();
-        var whosVideo = document.querySelector('#box1');
+        var whosVideo = document.querySelector('#box0');
         var whosTalking = document.getElementById(user+"Talk");
         var volumeDuration = [];
-        var audioSource = aCtx.createMediaElementSource(whosVideo); //need to change this
+        var audioSource = aCtx.createMediaStreamSource(easyrtc.getLocalStream()); //need to change this
         audioSource.connect(analyser);
         console.log("init process audio");
         setInterval(function(){
