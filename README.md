@@ -1,4 +1,4 @@
-EasyRTC Server Example
+EasyRTC Server Example -- Development
 ======================
 
 This folder contains all the files you'll need to create a simple server with EasyRTC, Express, and Socket.io. You can copy these files where you wish.
