@@ -1,5 +1,6 @@
 var maxCALLERS = 4;
 var numVideoOBJS = maxCALLERS+1;
+var roomName;
 
 function callEverybodyElse(roomName, otherPeople) {
 
@@ -35,8 +36,10 @@ function callEverybodyElse(roomName, otherPeople) {
   }
 }
 
-
 function loginSuccess() {
+  console.log('login successful');
+  console.log("entered room: "+roomName);
+
 }
 
 function getIdOfBox(boxNum) {
@@ -47,6 +50,8 @@ function getIdOfBox(boxNum) {
 function init() {
   easyrtc.setRoomOccupantListener(callEverybodyElse);
   easyrtc.easyApp("rhythm.party", "box0", ["box1", "box2", "box3", "box4"], loginSuccess);
+  roomName = prompt('enter room name:');
+  easyrtc.joinRoom(roomName);
   easyrtc.setDisconnectListener( function() {
     easyrtc.showError("LOST-CONNECTION", "Lost connection to signaling server");
   });
