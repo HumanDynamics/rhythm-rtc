@@ -38,9 +38,6 @@ function callEverybodyElse(roomName, otherPeople) {
 
 function loginSuccess() {
   console.log('login successful');
-  console.log("entered room: "+roomName);
-  document.querySelector('#roomIndicator').innerHTML = 'Currently in room \''+roomName+'\'';
-  document.querySelector('#leaveRoomLink').innerHTML = 'Leave Room'
 }
 
 function getIdOfBox(boxNum) {
@@ -79,6 +76,9 @@ function init() {
 function joinRoom(){
   roomName = prompt('enter room name:');
   easyrtc.joinRoom(roomName);
+  console.log("entered room: "+roomName);
+  document.querySelector('#roomIndicator').innerHTML = 'Currently in room \''+roomName+'\'';
+  document.querySelector('#leaveRoomLink').innerHTML = 'Leave Room'
 }
 
 function processAudio(){
