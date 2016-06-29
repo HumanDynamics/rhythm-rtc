@@ -39,7 +39,7 @@ function callEverybodyElse(roomName, otherPeople) {
 function loginSuccess() {
   console.log('login successful');
   console.log("entered room: "+roomName);
-
+  document.querySelector('#roomIndicator').innerHTML = 'Currently in room \''+roomName+'\'';
 }
 
 function getIdOfBox(boxNum) {

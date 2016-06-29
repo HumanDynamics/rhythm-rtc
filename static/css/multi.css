@@ -5,9 +5,9 @@ video {
 }
 #wrapper{
 	width:950px;
-	height:254px;
 	margin:0 auto;
 	text-align: center;
+	font-family: Helvetica, Arial;
 	padding:0;
 }
 
