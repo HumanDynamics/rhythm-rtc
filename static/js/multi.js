@@ -40,6 +40,7 @@ function loginSuccess() {
   console.log('login successful');
   console.log("entered room: "+roomName);
   document.querySelector('#roomIndicator').innerHTML = 'Currently in room \''+roomName+'\'';
+  document.querySelector('#leaveRoomLink').innerHTML = 'Leave Room'
 }
 
 function getIdOfBox(boxNum) {
@@ -50,8 +51,7 @@ function getIdOfBox(boxNum) {
 function init() {
   easyrtc.setRoomOccupantListener(callEverybodyElse);
   easyrtc.easyApp("rhythm.party", "box0", ["box1", "box2", "box3", "box4"], loginSuccess);
-  roomName = prompt('enter room name:');
-  easyrtc.joinRoom(roomName);
+  joinRoom();
   easyrtc.setDisconnectListener( function() {
     easyrtc.showError("LOST-CONNECTION", "Lost connection to signaling server");
   });
@@ -67,8 +67,19 @@ function init() {
       document.getElementById(getIdOfBox(slot+1)).style.visibility = "hidden";
     },20);
   });
+
+  document.getElementById('leaveRoomLink').addEventListener("click", function(){
+  //call roomLeave handler
+    easyrtc.leaveRoom(roomName,function(){
+      location.reload();
+    });
+  });
 }
 
+function joinRoom(){
+  roomName = prompt('enter room name:');
+  easyrtc.joinRoom(roomName);
+}
 
 function processAudio(){
   var aCtx = new AudioContext();
