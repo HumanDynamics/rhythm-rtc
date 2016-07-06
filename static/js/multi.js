@@ -88,7 +88,7 @@ function joinRoom(){
       easyrtc.joinRoom(roomName);
       console.log("entered room: "+roomName);
       document.querySelector('#roomIndicator').innerHTML = 'Currently in room \''+roomName+'\'';
-      document.querySelector('#leaveRoomLink').innerHTML = 'Leave Room';
+      document.getElementById('leaveRoomLink').style.visibility = "visible";
   }
 }
 
