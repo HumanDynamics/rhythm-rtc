@@ -68,17 +68,28 @@ function init() {
   document.getElementById('leaveRoomLink').addEventListener("click", function(){
   //call roomLeave handler
     easyrtc.leaveRoom(roomName,function(){
-      location.reload();
+      location.assign(location.href.substring(0,location.href.indexOf('?')));
     });
   });
 }
 
 function joinRoom(){
-  roomName = prompt('enter room name:');
-  easyrtc.joinRoom(roomName);
-  console.log("entered room: "+roomName);
-  document.querySelector('#roomIndicator').innerHTML = 'Currently in room \''+roomName+'\'';
-  document.querySelector('#leaveRoomLink').innerHTML = 'Leave Room'
+  roomName = getParam('room');
+  if(roomName === null || roomName === '' || roomName === 'null'){
+    roomName = prompt('enter room name:');
+    if(location.href.indexOf('?room=') === -1){
+      location.assign(location.href+"?room="+roomName);
+    }
+    else {
+      location.assign(location.href+roomName);
+    }
+  }
+  else{
+      easyrtc.joinRoom(roomName);
+      console.log("entered room: "+roomName);
+      document.querySelector('#roomIndicator').innerHTML = 'Currently in room \''+roomName+'\'';
+      document.querySelector('#leaveRoomLink').innerHTML = 'Leave Room';
+  }
 }
 
 function processAudio(){
@@ -124,4 +135,15 @@ function getAverageVolume(array) {
 
   average = values / length;
   return average;
+}
+
+//not mine
+function getParam(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
