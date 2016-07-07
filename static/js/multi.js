@@ -2,38 +2,65 @@ var maxCALLERS = 4;
 var numVideoOBJS = maxCALLERS+1;
 var roomName;
 
-function callEverybodyElse(roomName, otherPeople) {
-  easyrtc.setRoomOccupantListener(null); // so we're only called once.
+var needToCallOtherUsers;
 
-  var list = [];
-  var connectCount = 0;
-  for(var easyrtcid in otherPeople ) {
-    list.push(easyrtcid);
-  }
-  //
-  // Connect in reverse order. Latter arriving people are more likely to have
-  // empty slots.
-  //
-  function establishConnection(position) {
-    function callSuccess() {
-      connectCount++;
-      if( connectCount < maxCALLERS && position > 0) {
-        establishConnection(position-1);
-      }
+function callEverybodyElse(roomName, userList, selfInfo) {
+  var easyrtcid
+  if (needToCallOtherUsers) {
+    for (easyrtcid in userList) {
+      easyrtc.call(
+        easyrtcid,
+        function success (otherCaller, mediaType) {
+          console.log('success: ', otherCaller, mediaType);
+        },
+        function failure(errorCode, errorMessage) {
+          console.log('failure: ', errorCode, errorMessage);
+        }
+      );
     }
-    function callFailure(errorCode, errorText) {
-      easyrtc.showError(errorCode, errorText);
-      if( connectCount < maxCALLERS && position > 0) {
-        establishConnection(position-1);
-      }
-    }
-    easyrtc.call(list[position], callSuccess, callFailure);
-
-  }
-  if( list.length > 0) {
-    establishConnection(list.length-1);
+    needToCallOtherUsers = false;
   }
 }
+
+
+
+
+
+
+/* function callEverybodyElse(roomName, otherPeople) {
+ *   console.log('calling everybody else...')
+ *   //easyrtc.setRoomOccupantListener(null); // so we're only called once.
+ * 
+ *   var list = [];
+ *   var connectCount = 0;
+ *   for(var easyrtcid in otherPeople ) {
+ *     list.push(easyrtcid);
+ *   }
+ *   //
+ *   // Connect in reverse order. Latter arriving people are more likely to have
+ *   // empty slots.
+ *   //
+ *   function establishConnection(position) {
+ *     console.log('established connection!')
+ *     function callSuccess() {
+ *       connectCount++;
+ *       if( connectCount < maxCALLERS && position > 0) {
+ *         establishConnection(position-1);
+ *       }
+ *     }
+ *     function callFailure(errorCode, errorText) {
+ *       easyrtc.showError(errorCode, errorText);
+ *       if( connectCount < maxCALLERS && position > 0) {
+ *         establishConnection(position-1);
+ *       }
+ *     }
+ *     easyrtc.call(list[position], callSuccess, callFailure);
+ * 
+ *   }
+ *   if( list.length > 0) {
+ *     establishConnection(list.length-1);
+ *   }
+ * }*/
 
 function loginSuccess() {
   console.log('login successful');
@@ -49,9 +76,13 @@ function getIdOfBox(boxNum) {
 
 function init() {
   easyrtc.dontAddCloseButtons();
+  easyrtc.setRoomEntryListener(function(entry, roomName) {
+    needToCallOtherUsers = true;
+  });
+  easyrtc.setRoomOccupantListener(callEverybodyElse);
   easyrtc.easyApp("rhythm.party", "box0", ["box1", "box2", "box3", "box4"], loginSuccess);
   joinRoom();
-  easyrtc.setRoomOccupantListener(callEverybodyElse);
+
   easyrtc.setDisconnectListener( function() {
     easyrtc.showError("LOST-CONNECTION", "Lost connection to signaling server");
   });
