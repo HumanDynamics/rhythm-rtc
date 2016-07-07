@@ -22,46 +22,6 @@ function callEverybodyElse(roomName, userList, selfInfo) {
   }
 }
 
-
-
-
-
-
-/* function callEverybodyElse(roomName, otherPeople) {
- *   console.log('calling everybody else...')
- *   //easyrtc.setRoomOccupantListener(null); // so we're only called once.
- * 
- *   var list = [];
- *   var connectCount = 0;
- *   for(var easyrtcid in otherPeople ) {
- *     list.push(easyrtcid);
- *   }
- *   //
- *   // Connect in reverse order. Latter arriving people are more likely to have
- *   // empty slots.
- *   //
- *   function establishConnection(position) {
- *     console.log('established connection!')
- *     function callSuccess() {
- *       connectCount++;
- *       if( connectCount < maxCALLERS && position > 0) {
- *         establishConnection(position-1);
- *       }
- *     }
- *     function callFailure(errorCode, errorText) {
- *       easyrtc.showError(errorCode, errorText);
- *       if( connectCount < maxCALLERS && position > 0) {
- *         establishConnection(position-1);
- *       }
- *     }
- *     easyrtc.call(list[position], callSuccess, callFailure);
- * 
- *   }
- *   if( list.length > 0) {
- *     establishConnection(list.length-1);
- *   }
- * }*/
-
 function loginSuccess() {
   console.log('login successful');
   document.getElementById('box0').addEventListener('playing',function(){
