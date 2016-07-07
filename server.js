@@ -4,9 +4,11 @@ const express = require('express')
 const io = require('socket.io')
 const easyrtc = require('easyrtc')
 const path = require('path')
+const browserify = require('browserify-middleware')
+const app = express()
 
-var app = express()
-
+browserify.settings.development('basedir', __dirname)
+app.get('/js/main.js', browserify('./client/main.js'))
 app.use(express.static(path.join(__dirname, '/public/')))
 
 let webServer = http.createServer(app).listen(process.env.PORT)

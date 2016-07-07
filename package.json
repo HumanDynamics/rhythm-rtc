@@ -10,9 +10,13 @@
   "dependencies": {
     "babel": "^6.5.2",
     "babel-cli": "^6.10.1",
+    "browserify-middleware": "^7.0.0",
+    "domready": "^1.0.8",
     "easyrtc": "^1.0.15",
     "express": "*",
-    "socket.io": "0.9.x"
+    "socket.io": "0.9.x",
+    "socket.io-client": "^1.4.8",
+    "webpack": "^1.13.1"
   },
   "license": "BSD2",
   "engines": {

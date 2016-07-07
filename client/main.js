@@ -1,10 +1,16 @@
-var maxCALLERS = 4;
-var numVideoOBJS = maxCALLERS+1;
-var roomName;
+require('../node_modules/easyrtc/api/easyrtc')
+const io = require('socket.io-client')
+const domready = require("domready");
 
-var needToCallOtherUsers;
+domready(init)
 
-function callEverybodyElse(roomName, userList, selfInfo) {
+var maxCALLERS = 4
+var numVideoOBJS = maxCALLERS+1
+var roomName
+
+var needToCallOtherUsers
+
+function callEverybodyElse (roomName, userList, selfInfo) {
   var easyrtcid
   if (needToCallOtherUsers) {
     for (easyrtcid in userList) {
