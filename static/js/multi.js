@@ -38,6 +38,9 @@ function callEverybodyElse(roomName, otherPeople) {
 
 function loginSuccess() {
   console.log('login successful');
+  document.getElementById('box0').addEventListener('playing',function(){
+  processAudio();
+    });
 }
 
 function getIdOfBox(boxNum) {
@@ -47,6 +50,7 @@ function getIdOfBox(boxNum) {
 
 function init() {
   easyrtc.setRoomOccupantListener(callEverybodyElse);
+  easyrtc.dontAddCloseButtons();
   easyrtc.easyApp("rhythm.party", "box0", ["box1", "box2", "box3", "box4"], loginSuccess);
   joinRoom();
   easyrtc.setDisconnectListener( function() {
@@ -55,9 +59,6 @@ function init() {
   easyrtc.setOnCall( function(easyrtcid, slot) {
     console.log("getConnection count="  + easyrtc.getConnectionCount() );
     document.getElementById(getIdOfBox(slot+1)).style.visibility = "visible";
-    document.getElementById(getIdOfBox(slot+1)).addEventListener('playing',function(){
-        processAudio();
-    });
   });
   easyrtc.setOnHangup(function(easyrtcid, slot) {
     setTimeout(function() {
@@ -98,7 +99,7 @@ function processAudio(){
   var whosVideo = document.querySelector("#box0");
   var whosTalking = document.getElementById("box0Talk");
   var volumeDuration = [];
-  var audioSource = aCtx.createMediaStreamSource(easyrtc.getLocalStream()); //need to change this
+  var audioSource = aCtx.createMediaStreamSource(easyrtc.getLocalStream());
   audioSource.connect(analyser);
   console.log("init process audio");
   setInterval(function(){
@@ -109,7 +110,7 @@ function processAudio(){
     var threshold = 20;
 
     if(volume > threshold){
-      whosTalking.innerHTML = " you're talking!";
+      whosTalking.innerHTML = "you're talking!";
       volumeDuration.push(whosVideo.currentTime);
     }
     else{
