@@ -1,13 +1,15 @@
 {
-  "name": "easyrtc_server_example",
-  "version": "0.1.6",
-  "author": "Priologic Software Inc. <info@priologic.com> (http://priologic.com/)",
-  "description": "Simple EasyRTC server example which includes EasyRTC, Express, and Socket.ioooooooooo",
+  "name": "rhythm-rtc",
+  "version": "0.1.0",
+  "author": "aladetan@mit.edu, dcalacci@mit.edu",
+  "description": "RTC Server and Client for the Rhythm Framework",
   "private": true,
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
+    "babel": "^6.5.2",
+    "babel-cli": "^6.10.1",
     "easyrtc": "^1.0.15",
     "express": "*",
     "socket.io": "0.9.x"
