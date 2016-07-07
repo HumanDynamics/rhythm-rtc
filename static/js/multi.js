@@ -3,7 +3,6 @@ var numVideoOBJS = maxCALLERS+1;
 var roomName;
 
 function callEverybodyElse(roomName, otherPeople) {
-
   easyrtc.setRoomOccupantListener(null); // so we're only called once.
 
   var list = [];
@@ -49,10 +48,10 @@ function getIdOfBox(boxNum) {
 
 
 function init() {
-  easyrtc.setRoomOccupantListener(callEverybodyElse);
   easyrtc.dontAddCloseButtons();
   easyrtc.easyApp("rhythm.party", "box0", ["box1", "box2", "box3", "box4"], loginSuccess);
   joinRoom();
+  easyrtc.setRoomOccupantListener(callEverybodyElse);
   easyrtc.setDisconnectListener( function() {
     easyrtc.showError("LOST-CONNECTION", "Lost connection to signaling server");
   });
