@@ -1,6 +1,6 @@
-require('../node_modules/easyrtc/api/easyrtc')
 const io = require('socket.io-client')
 const domready = require("domready");
+const $ = require('jQuery')
 
 domready(init)
 
@@ -30,19 +30,21 @@ function callEverybodyElse (roomName, userList, selfInfo) {
 
 function loginSuccess() {
   console.log('login successful');
-  document.getElementById('box0').addEventListener('playing',function(){
-  processAudio();
-    });
+  $('#box0').addEventListener('playing',function(){
+    console.log('user box is playing...')
+    processAudio();
+  });
 }
 
 function getIdOfBox(boxNum) {
-  return "box" + boxNum;
+  return "#box" + boxNum;
 }
 
 
 function init() {
   easyrtc.dontAddCloseButtons();
   easyrtc.setRoomEntryListener(function(entry, roomName) {
+    console.log('entered room!')
     needToCallOtherUsers = true;
   });
   easyrtc.setRoomOccupantListener(callEverybodyElse);
@@ -54,16 +56,16 @@ function init() {
   });
   easyrtc.setOnCall( function(easyrtcid, slot) {
     console.log("getConnection count="  + easyrtc.getConnectionCount() );
-    document.getElementById(getIdOfBox(slot+1)).style.visibility = "visible";
+    $(getIdOfBox(slot+1)).css('visibility', 'visible');
   });
   easyrtc.setOnHangup(function(easyrtcid, slot) {
     setTimeout(function() {
-      document.getElementById(getIdOfBox(slot+1)).style.visibility = "hidden";
+      $(getIdOfBox(slot+1)).css('visibility', 'hidden');
     },20);
   });
 
-  document.getElementById('leaveRoomLink').addEventListener("click", function(){
-  //call roomLeave handler
+  $('#leaveRoomLink').click(function(){
+    //call roomLeave handler
     easyrtc.leaveRoom(roomName,function(){
       location.assign(location.href.substring(0,location.href.indexOf('?')));
     });
@@ -82,18 +84,18 @@ function joinRoom(){
     }
   }
   else{
-      easyrtc.joinRoom(roomName);
-      console.log("entered room: "+roomName);
-      document.querySelector('#roomIndicator').innerHTML = 'Currently in room \''+roomName+'\'';
-      document.getElementById('leaveRoomLink').style.visibility = "visible";
+    easyrtc.joinRoom(roomName);
+    console.log("entered room: "+roomName);
+    $('#roomIndicator').html('Currently in room \''+roomName+'\'')
+    $('#leaveRoomLink').css('visibility', 'visible');
   }
 }
 
 function processAudio(){
   var aCtx = new AudioContext();
   var analyser = aCtx.createAnalyser();
-  var whosVideo = document.querySelector("#box0");
-  var whosTalking = document.getElementById("box0Talk");
+  var whosVideo = $("#box0");
+  var whosTalking = $("#box0Talk");
   var volumeDuration = [];
   var audioSource = aCtx.createMediaStreamSource(easyrtc.getLocalStream());
   audioSource.connect(analyser);
@@ -136,11 +138,11 @@ function getAverageVolume(array) {
 
 //not mine
 function getParam(name, url) {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, "\\$&");
+  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+      results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
