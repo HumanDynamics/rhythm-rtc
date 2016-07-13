@@ -1,6 +1,6 @@
 const io = require('socket.io-client')
 const domready = require("domready");
-const $ = require('jQuery')
+const $ = require('jquery')
 
 domready(init)
 
