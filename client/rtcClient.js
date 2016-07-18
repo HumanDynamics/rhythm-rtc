@@ -6,14 +6,16 @@ const audio = require('./audio')
 
 var $scope = {
   roomName: null,
-  needToCallOtherUsers: null
+  needToCallOtherUsers: true
 }
 
 function callEverybodyElse (roomName, userList, selfInfo) {
   if ($scope.needToCallOtherUsers) {
-    _.forEach(userList, (rtcId) => {
+    console.log('need to call other users:', userList)
+    _.forEach(userList, (user) => {
+      console.log('trying to call user:', user)
       easyrtc.call(
-        rtcId,
+        user.easyrtcid,
         function success (otherCaller, mediaType) {
           console.log('success', otherCaller, mediaType)
         },
