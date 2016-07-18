@@ -1,5 +1,5 @@
 /* global easyrtc AudioContext*/
-const $ = require('jQuery')
+const $ = require('jquery')
 
 function processAudio () {
   console.log('preparing to process audio...')
