@@ -11,7 +11,7 @@ browserify.settings.development('basedir', __dirname)
 app.get('/js/main.js', browserify('./client/main.js'))
 app.use(express.static(path.join(__dirname, '/public/')))
 
-let webServer = http.createServer(app).listen(process.env.PORT)
+var webServer = http.createServer(app).listen(process.env.PORT)
 
 // Start Socket.io so it attaches itself to Express server
 var socketServer = io.listen(webServer, {'log level': 1})
