@@ -1,6 +1,6 @@
 {
   "name": "rhythm-rtc",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "aladetan@mit.edu, dcalacci@mit.edu",
   "description": "RTC Server and Client for the Rhythm Framework",
   "private": true,
