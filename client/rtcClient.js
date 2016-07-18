@@ -1,5 +1,5 @@
 /* global easyrtc location prompt*/
-const $ = require('jQuery')
+const $ = require('jquery')
 const _ = require('lodash')
 const utils = require('./utils')
 const audio = require('./audio')
