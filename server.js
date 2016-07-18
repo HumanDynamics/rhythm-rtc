@@ -18,6 +18,20 @@ var socketServer = io.listen(webServer, {'log level': 1})
 
 easyrtc.setOption('logLevel', 'debug')
 
+// Setting up ICE STUN/TURN servers
+// Currently using google STUN servers and no TURN servers
+
+var iceServers = [
+  {'url': 'stun:stun.l.google.com:19305'},
+  {'url1': 'stun:stun.l.google.com:19305'},
+  {'url2': 'stun:stun.l.google.com:19305'},
+  {'url3': 'stun:stun.l.google.com:19305'},
+  {'url4': 'stun:stun.l.google.com:19305'},
+  {'url': 'stun:stun.l.google.com:19305'}
+]
+
+easyrtc.setOption('appIceServers', iceServers)
+
 // Overriding the default easyrtcAuth listener, only so we can directly access its callback
 easyrtc.events.on('easyrtcAuth', function (socket, easyrtcid, msg, socketCallback, callback) {
   easyrtc.events.defaultListeners.easyrtcAuth(socket, easyrtcid, msg, socketCallback, function (err, connectionObj) {
