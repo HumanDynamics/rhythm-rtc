@@ -23,11 +23,10 @@ easyrtc.setOption('logLevel', 'debug')
 
 var iceServers = [
   {'url': 'stun:stun.l.google.com:19305'},
-  {'url1': 'stun:stun.l.google.com:19305'},
-  {'url2': 'stun:stun.l.google.com:19305'},
-  {'url3': 'stun:stun.l.google.com:19305'},
-  {'url4': 'stun:stun.l.google.com:19305'},
-  {'url': 'stun:stun.l.google.com:19305'}
+  {'url': 'stun:stun1.l.google.com:19305'},
+  {'url': 'stun:stun2.l.google.com:19305'},
+  {'url': 'stun:stun3.l.google.com:19305'},
+  {'url': 'stun:stun4.l.google.com:19305'}
 ]
 
 easyrtc.setOption('appIceServers', iceServers)

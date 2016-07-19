@@ -18,10 +18,10 @@ function processAudio () {
     var threshold = 20
 
     if (volume > threshold) {
-      whosTalking.innerHTML = "you're talking!"
+      whosTalking.html('you\'re talking!')
       volumeDuration.push(whosVideo.currentTime)
     } else {
-      whosTalking.innerHTML = 'you are not talking!'
+      whosTalking.html('you are not talking!')
       if (volumeDuration.length > 0) {
         console.log('last talk duration: ' + (Math.max(...volumeDuration) - Math.min(...volumeDuration)))
         volumeDuration = []
