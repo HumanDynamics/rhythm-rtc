@@ -18,7 +18,7 @@ const app = feathers()
 .configure(feathers.socketio(socket))
 .configure(feathers.authentication())
 
-function processAudio () {
+function processAudio ($scope) {
   console.log('preparing to process audio...')
   app.authenticate({
     type: 'local',
@@ -30,8 +30,8 @@ function processAudio () {
     socket.emit('meetingJoined', {
       participant: easyrtc.myEasyrtcid,
       name: easyrtc.myEasyrtcid,
-      participants: [easyrtc.myEasyrtcid],
-      meeting: Object.keys(easyrtc.roomJoin)[0]
+      participants: $scope.roomUsers,
+      meeting: $scope.roomName
     })
 
     app.service('participants').patch(easyrtc.myEasyrtcid, {

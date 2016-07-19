@@ -34,7 +34,7 @@ function loginSuccess () {
   $scope.roomUsers.push(easyrtc.myEasyrtcid)
   $('#box0').on('playing', function () {
     console.log('user box is playing...')
-    audio.startProcessingAudio()
+    audio.startProcessingAudio($scope)
   })
 }
 
