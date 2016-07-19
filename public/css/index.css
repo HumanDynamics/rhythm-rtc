@@ -1,12 +1,15 @@
 video {
-	width:300px;
-	height:250px;
+	vertical-align:top;
+	max-width:300px;
+	max-height:250px;
 	padding:0;
+	display: inline-block;
 	/*Mirrors the video streams*/
 	transform: rotateY(180deg);
     -webkit-transform:rotateY(180deg); /* Safari and Chrome */
     -moz-transform:rotateY(180deg); /* Firefox */
 }
+
 #wrapper{
 	width:950px;
 	margin:0 auto;
@@ -18,7 +21,7 @@ video {
 .clear {
 	width:950px;
 }
-}
+
 
 p {
 	padding:0;
@@ -26,13 +29,12 @@ p {
 	height:25px;
 }
 
-.video {
-	vertical-align:top;
-	min-width:300px;
-	min-height: 275px;
-	padding:0;
-	display: inline-block;
+#box0 {
+	border: 5px solid #555;
+	width:290px;
+	height:220px;
 }
+
 
 a{
 	color:#E68308;

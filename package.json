@@ -16,6 +16,7 @@
     "express": "*",
     "jquery": "^3.0.0",
     "lodash": "^4.13.1",
+    "sibilant-webaudio": "^0.1.1",
     "socket.io": "0.9.x",
     "socket.io-client": "^1.4.8",
     "webpack": "^1.13.1"
