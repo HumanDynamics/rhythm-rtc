@@ -6,6 +6,7 @@ const audio = require('./audio')
 
 var $scope = {
   roomName: null,
+  roomUsers: [],
   needToCallOtherUsers: true
 }
 
@@ -30,6 +31,7 @@ function callEverybodyElse (roomName, userList, selfInfo) {
 
 function loginSuccess () {
   console.log('login successful')
+  $scope.roomUsers.push(easyrtc.myEasyrtcid)
   $('#box0').on('playing', function () {
     console.log('user box is playing...')
     audio.startProcessingAudio()
@@ -53,12 +55,12 @@ function init () {
                   ['box1', 'box2', 'box3', 'box4'],
                   loginSuccess)
   joinRoom()
-
   easyrtc.setDisconnectListener(function () {
     easyrtc.showError('LOST-CONNECTION', 'Lost connection to signaling server')
   })
   easyrtc.setOnCall(function (easyrtcid, slot) {
     console.log('getConnection count=' + easyrtc.getConnectionCount())
+    $scope.roomUsers.push(easyrtcid)
     $(getIdOfBox(slot + 1)).css('visibility', 'visible')
   })
   easyrtc.setOnHangup(function (easyrtcid, slot) {
