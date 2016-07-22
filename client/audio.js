@@ -26,19 +26,18 @@ function processAudio (scope) {
     password: 'heroku-password'
   }).then(function (result) {
     console.log('auth result:', result)
-
-    socket.emit('meetingJoined', {
+    return socket.emit('meetingJoined', {
       participant: easyrtc.myEasyrtcid,
       name: easyrtc.myEasyrtcid,
       participants: scope.roomUsers,
       meeting: scope.roomName
     })
-
-    app.service('participants').patch(easyrtc.myEasyrtcid, {
+  }).then(function (result) {
+    return app.service('participants').patch(easyrtc.myEasyrtcid, {
       consent: true,
       consentDate: new Date().toISOString()
     })
-
+  }).then(function (result) {
     var speakingEvents = new Sibilant(easyrtc.getLocalStream(), {passThrough: false})
     speakingEvents.bind('speaking', function () {
       document.querySelector('#box0').style.border = '5px solid #27ae60'
@@ -69,7 +68,6 @@ function processAudio (scope) {
     })
   })
 }
-
 module.exports = {
   startProcessingAudio: processAudio
 }
