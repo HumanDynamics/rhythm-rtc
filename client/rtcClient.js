@@ -68,6 +68,7 @@ function loginSuccess () {
   }).catch(function (err) {
     console.log('ERROR:', err)
   }).then(function (result) {
+    console.log('meeting result:', result)
     return app.service('participants').patch(easyrtc.myEasyrtcid, {
       consent: true,
       consentDate: new Date().toISOString()
@@ -75,6 +76,7 @@ function loginSuccess () {
   }).catch(function (err) {
     console.log('ERROR:', err)
   }).then(function (result) {
+    console.log('consent result:', result)
     audio.startProcessingAudio($scope)
   })
 }
