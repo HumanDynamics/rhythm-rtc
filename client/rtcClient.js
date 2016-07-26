@@ -3,11 +3,29 @@ const $ = require('jquery')
 const _ = require('lodash')
 const utils = require('./utils')
 const audio = require('./audio')
+const io = require('socket.io-client')
+const feathers = require('feathers-client')
+
+var socket = io('https://rhythm-server.herokuapp.com', {
+  'transports': [
+    'websocket',
+    'flashsocket',
+    'htmlfile',
+    'xhr-polling',
+    'jsonp-polling'
+  ]
+})
+
+const app = feathers()
+.configure(feathers.hooks())
+.configure(feathers.socketio(socket))
+.configure(feathers.authentication())
 
 var $scope = {
   roomName: null,
   roomUsers: [],
-  needToCallOtherUsers: true
+  needToCallOtherUsers: true,
+  app: app
 }
 
 function callEverybodyElse (roomName, userList, selfInfo) {
@@ -33,7 +51,32 @@ function loginSuccess () {
   console.log('login successful')
   $scope.roomUsers.push({participant: easyrtc.myEasyrtcid, meeting: $scope.roomName})
   console.log($scope.roomUsers)
-  audio.startProcessingAudio($scope)
+  app.authenticate({
+    type: 'local',
+    email: 'heroku-email',
+    password: 'heroku-password'
+  }).then(function (result) {
+    console.log('auth result:', result)
+    return socket.emit('meetingJoined', {
+      participant: easyrtc.myEasyrtcid,
+      name: easyrtc.myEasyrtcid,
+      participants: $scope.roomUsers,
+      meetings: $scope.roomName,
+      meeting: $scope.roomName,
+      meetingUrl: location.href
+    })
+  }).catch(function (err) {
+    console.log('ERROR:', err)
+  }).then(function (result) {
+    return app.service('participants').patch(easyrtc.myEasyrtcid, {
+      consent: true,
+      consentDate: new Date().toISOString()
+    })
+  }).catch(function (err) {
+    console.log('ERROR:', err)
+  }).then(function (result) {
+    audio.startProcessingAudio($scope)
+  })
 }
 
 function getIdOfBox (boxNum) {
