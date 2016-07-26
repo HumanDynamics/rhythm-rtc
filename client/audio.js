@@ -34,11 +34,15 @@ function processAudio (scope) {
       meeting: scope.roomName,
       meetingUrl: location.href
     })
+  }).catch(function (err) {
+    console.log('ERROR:', err)
   }).then(function (result) {
     return app.service('participants').patch(easyrtc.myEasyrtcid, {
       consent: true,
       consentDate: new Date().toISOString()
     })
+  }).catch(function (err) {
+    console.log('ERROR:', err)
   }).then(function (result) {
     var speakingEvents = new Sibilant(easyrtc.getLocalStream(), {passThrough: false})
     speakingEvents.bind('speaking', function () {

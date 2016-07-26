@@ -32,10 +32,8 @@ function callEverybodyElse (roomName, userList, selfInfo) {
 function loginSuccess () {
   console.log('login successful')
   $scope.roomUsers.push({participant: easyrtc.myEasyrtcid, meeting: $scope.roomName})
-  $('#box0').on('playing', function () {
-    console.log('user box is playing...')
-    audio.startProcessingAudio($scope)
-  })
+  console.log($scope.roomUsers)
+  audio.startProcessingAudio($scope)
 }
 
 function getIdOfBox (boxNum) {
