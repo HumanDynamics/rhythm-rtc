@@ -2,7 +2,7 @@
 const Sibilant = require('sibilant-webaudio')
 
 function processAudio (scope) {
-  console.log('preparing to process audio...')
+  console.log('preparing to process audio....')
   var speakingEvents = new Sibilant(easyrtc.getLocalStream(), {passThrough: false})
   speakingEvents.bind('speaking', function () {
     document.querySelector('#box0').style.border = '5px solid #27ae60'
