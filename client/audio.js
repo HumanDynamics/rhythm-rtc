@@ -1,4 +1,4 @@
-/* global easyrtc*/
+/* global easyrtc location*/
 const Sibilant = require('sibilant-webaudio')
 const io = require('socket.io-client')
 const feathers = require('feathers-client')
@@ -30,7 +30,9 @@ function processAudio (scope) {
       participant: easyrtc.myEasyrtcid,
       name: easyrtc.myEasyrtcid,
       participants: scope.roomUsers,
-      meeting: scope.roomName
+      meetings: scope.roomName,
+      meeting: scope.roomName,
+      meetingUrl: location.href
     })
   }).then(function (result) {
     return app.service('participants').patch(easyrtc.myEasyrtcid, {

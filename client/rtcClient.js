@@ -31,7 +31,7 @@ function callEverybodyElse (roomName, userList, selfInfo) {
 
 function loginSuccess () {
   console.log('login successful')
-  $scope.roomUsers.push(easyrtc.myEasyrtcid)
+  $scope.roomUsers.push({participant: easyrtc.myEasyrtcid, meeting: $scope.roomName})
   $('#box0').on('playing', function () {
     console.log('user box is playing...')
     audio.startProcessingAudio($scope)
@@ -60,7 +60,7 @@ function init () {
   })
   easyrtc.setOnCall(function (easyrtcid, slot) {
     console.log('getConnection count=' + easyrtc.getConnectionCount())
-    $scope.roomUsers.push(easyrtcid)
+    $scope.roomUsers.push({participant: easyrtcid, meeting: $scope.roomName})
     $(getIdOfBox(slot + 1)).css('visibility', 'visible')
   })
   easyrtc.setOnHangup(function (easyrtcid, slot) {
