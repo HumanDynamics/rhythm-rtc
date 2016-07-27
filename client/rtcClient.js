@@ -63,21 +63,15 @@ function loginSuccess () {
       participants: $scope.roomUsers,
       meetings: $scope.roomName,
       meeting: $scope.roomName,
-      meetingUrl: location.href
-    })
-  }).catch(function (err) {
-    console.log('ERROR:', err)
-  }).then(function (result) {
-    console.log('meeting result:', result)
-    return app.service('participants').patch(easyrtc.myEasyrtcid, {
+      meetingUrl: location.href,
       consent: true,
       consentDate: new Date().toISOString()
     })
   }).catch(function (err) {
     console.log('ERROR:', err)
   }).then(function (result) {
-    console.log('consent result:', result)
-    audio.startProcessingAudio($scope)
+    console.log('meeting result:', result)
+    audio.startProcessing($scope)
   })
 }
 

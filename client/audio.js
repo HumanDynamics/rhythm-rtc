@@ -33,5 +33,5 @@ function processAudio (scope) {
   })
 }
 module.exports = {
-  startProcessingAudio: processAudio
+  startProcessing: processAudio
 }
