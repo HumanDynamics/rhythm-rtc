@@ -20,7 +20,7 @@ var socketServer = io.listen(webServer, {'log level': 1})
 easyrtc.setOption('logLevel', 'debug')
 
 // Setting up ICE STUN/TURN servers
-// Currently using twilio STUN servers and no TURN servers
+// Currently using twilio STUN servers TURN servers
 
 // twilio api authentication
 var accountSid = process.env.TWILIO_ID
