@@ -62,7 +62,6 @@ function loginSuccess () {
       participant: easyrtc.myEasyrtcid,
       name: easyrtc.myEasyrtcid,
       participants: $scope.roomUsers,
-      meetings: $scope.roomName,
       meeting: $scope.roomName,
       meetingUrl: location.href,
       consent: true,
@@ -73,7 +72,7 @@ function loginSuccess () {
   }).then(function (result) {
     console.log('meeting result:', result)
     audio.startProcessing($scope)
-    viz.startMM(app,$scope)
+    viz.startMM($scope)
   })
 }
 
@@ -101,7 +100,7 @@ function init () {
     console.log('getConnection count=' + easyrtc.getConnectionCount())
     $scope.roomUsers.push({participant: easyrtcid, meeting: $scope.roomName})
     $(getIdOfBox(slot + 1)).css('visibility', 'visible')
-    viz.updateMM($scope.roomUsers)
+    viz.updateMM()
   })
   easyrtc.setOnHangup(function (easyrtcid, slot) {
     setTimeout(function () {
@@ -111,7 +110,6 @@ function init () {
   })
 
   $('#leaveRoomLink').click(function () {
-    // call roomLeave handler
     easyrtc.leaveRoom($scope.roomName, function () {
       location.assign(location.href.substring(0, location.href.indexOf('?')))
     })

@@ -45,7 +45,7 @@ function maybe_update_mm_participants(participantsChangedEvent) {
                  turns: mm.data.turns});
 }
 
-function start_meeting_mediator (app, scope) {
+function start_meeting_mediator (scope) {
   $scope = scope
   console.log('>> Starting meeting mediator...')
 
@@ -53,7 +53,7 @@ function start_meeting_mediator (app, scope) {
     return
   }
 
-  var turns = app.service('turns')
+  var turns = $scope.app.service('turns')
   var participants = _.map($scope.roomUsers, function (p) {return p.participant})
   var localParticipantId =  easyrtc.myEasyrtcid
   console.log('MM participants:', participants)
