@@ -1,5 +1,7 @@
 /* global easyrtc*/
 const Sibilant = require('sibilant-webaudio')
+const viz = require('./charts')
+
 
 function processAudio (scope) {
   console.log('preparing to process audio....')
@@ -29,6 +31,7 @@ function processAudio (scope) {
         console.log('ERROR:', err)
       })
     document.querySelector('#box0').style.border = '5px solid #555'
+    viz.updateMM(scope.roomUsers)
   })
 }
 module.exports = {
