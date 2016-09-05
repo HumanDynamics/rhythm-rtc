@@ -73,6 +73,8 @@ function loginSuccess () {
     console.log('meeting result:', result)
     audio.startProcessing($scope)
     viz.startMM($scope)
+    var turns = app.service('turns')
+    turns.on('created', viz.turnsMM)
   })
 }
 
@@ -106,7 +108,7 @@ function init () {
     setTimeout(function () {
       $(getIdOfBox(slot + 1)).css('visibility', 'hidden')
     }, 20)
-    //need to update viz here and remove participant
+    // need to update viz here and remove participant
   })
 
   $('#leaveRoomLink').click(function () {
