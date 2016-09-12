@@ -5,18 +5,35 @@ const io = require('socket.io')
 const easyrtc = require('easyrtc')
 const path = require('path')
 const browserify = require('browserify-middleware')
+const twilio = require('twilio')
 const app = express()
 
 browserify.settings.development('basedir', __dirname)
 app.get('/js/main.js', browserify('./client/main.js'))
 app.use(express.static(path.join(__dirname, '/public/')))
 
-let webServer = http.createServer(app).listen(process.env.PORT)
+var webServer = http.createServer(app).listen(process.env.PORT)
 
 // Start Socket.io so it attaches itself to Express server
 var socketServer = io.listen(webServer, {'log level': 1})
 
 easyrtc.setOption('logLevel', 'debug')
+
+// Setting up ICE STUN/TURN servers
+// Currently using twilio STUN servers TURN servers
+
+// twilio api authentication
+var accountSid = process.env.TWILIO_ID
+var authToken = process.env.TWILIO_TOKEN
+
+var client = new twilio.RestClient(accountSid, authToken)
+
+client.tokens.create({}, function (err, token) {
+  if (err) { console.log(err) }
+  var iceServers = token.ice_servers
+  console.log('twilio ice servers: ', iceServers)
+  easyrtc.setOption('appIceServers', iceServers)
+})
 
 // Overriding the default easyrtcAuth listener, only so we can directly access its callback
 easyrtc.events.on('easyrtcAuth', function (socket, easyrtcid, msg, socketCallback, callback) {
