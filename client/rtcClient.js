@@ -25,7 +25,8 @@ var $scope = {
   roomName: null,
   roomUsers: [],
   needToCallOtherUsers: true,
-  app: app
+  app: app,
+  screenSize: 0
 }
 
 function callEverybodyElse (roomName, userList, selfInfo) {
@@ -99,10 +100,12 @@ function init () {
     console.log('getConnection count=' + easyrtc.getConnectionCount())
     $scope.roomUsers.push({participant: easyrtcid, meeting: $scope.roomName})
     $(getIdOfBox(slot + 1)).css('display', 'unset')
+    screenLogic()
   })
   easyrtc.setOnHangup(function (easyrtcid, slot) {
     setTimeout(function () {
       $(getIdOfBox(slot + 1)).css('display', 'none')
+      screenLogic()
     }, 20)
   })
 
@@ -129,6 +132,17 @@ function joinRoom () {
     $('#roomIndicator').html("Currently in room '" + $scope.roomName + "'")
     $('#leaveRoomLink').css('visibility', 'visible')
   }
+}
+
+function screenLogic () {
+  // this is the  function that controls the sizing of remote callers on screen
+  if ($scope.screenSize !== 0) {
+    $('.remote').removeClass('m' + $scope.screenSize)
+  }
+
+  var newSize = 12 / (easyrtc.getConnectionCount())
+  $('.remote').addClass('m' + newSize)
+  $scope.screenSize = newSize
 }
 
 module.exports = {
