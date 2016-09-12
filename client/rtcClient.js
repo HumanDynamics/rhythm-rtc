@@ -3,6 +3,7 @@ const $ = require('jquery')
 const _ = require('lodash')
 const utils = require('./utils')
 const audio = require('./audio')
+const viz = require('./charts')
 const io = require('socket.io-client')
 const feathers = require('feathers-client')
 
@@ -62,7 +63,6 @@ function loginSuccess () {
       participant: easyrtc.myEasyrtcid,
       name: easyrtc.myEasyrtcid,
       participants: $scope.roomUsers,
-      meetings: $scope.roomName,
       meeting: $scope.roomName,
       meetingUrl: location.href,
       consent: true,
@@ -73,6 +73,7 @@ function loginSuccess () {
   }).then(function (result) {
     console.log('meeting result:', result)
     audio.startProcessing($scope)
+    viz.startMM($scope)
   })
 }
 
@@ -101,16 +102,17 @@ function init () {
     $scope.roomUsers.push({participant: easyrtcid, meeting: $scope.roomName})
     $(getIdOfBox(slot + 1)).css('display', 'unset')
     screenLogic()
+    viz.updateMM()
   })
   easyrtc.setOnHangup(function (easyrtcid, slot) {
     setTimeout(function () {
       $(getIdOfBox(slot + 1)).css('display', 'none')
       screenLogic()
     }, 20)
+    //need to update viz here and remove participant
   })
 
   $('#leaveRoomLink').click(function () {
-    // call roomLeave handler
     easyrtc.leaveRoom($scope.roomName, function () {
       location.assign(location.href.substring(0, location.href.indexOf('?')))
     })
