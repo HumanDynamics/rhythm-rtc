@@ -98,11 +98,11 @@ function init () {
   easyrtc.setOnCall(function (easyrtcid, slot) {
     console.log('getConnection count=' + easyrtc.getConnectionCount())
     $scope.roomUsers.push({participant: easyrtcid, meeting: $scope.roomName})
-    $(getIdOfBox(slot + 1)).css('visibility', 'visible')
+    $(getIdOfBox(slot + 1)).css('display', 'unset')
   })
   easyrtc.setOnHangup(function (easyrtcid, slot) {
     setTimeout(function () {
-      $(getIdOfBox(slot + 1)).css('visibility', 'hidden')
+      $(getIdOfBox(slot + 1)).css('display', 'none')
     }, 20)
   })
 

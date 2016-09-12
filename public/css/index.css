@@ -1,7 +1,15 @@
+ body {
+     display: flex;
+     min-height: 100vh;
+     flex-direction: column;
+ }
+ 
+ main {
+     flex: 1 0 auto;
+ }
+
 video {
 	vertical-align:top;
-	max-width:300px;
-	max-height:250px;
 	padding:0;
 	display: inline-block;
 	/*Mirrors the video streams*/
@@ -10,19 +18,6 @@ video {
     -moz-transform:rotateY(180deg); /* Firefox */
 }
 
-#wrapper{
-	width:950px;
-	margin:0 auto;
-	padding:0;
-	text-align: center;
-	font-family: Helvetica, Arial;
-}
-
-.clear {
-	width:950px;
-}
-
-
 p {
 	padding:0;
 	margin:0;
@@ -30,11 +25,17 @@ p {
 }
 
 #box0 {
+	margin-top:25px;
+	margin-bottom: 10px;
 	border: 5px solid #555;
-	width:290px;
-	height:220px;
+	width:237px;
+	height:180px;
 }
 
+.remote{
+	margin-top: 25px;
+	height:100%;
+}
 
 a{
 	color:#E68308;
