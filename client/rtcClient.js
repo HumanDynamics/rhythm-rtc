@@ -46,6 +46,7 @@ function callEverybodyElse (roomName, userList, selfInfo) {
       )
     })
     $scope.needToCallOtherUsers = false
+    screenLogic()
   }
 }
 
@@ -109,7 +110,7 @@ function init () {
       $(getIdOfBox(slot + 1)).css('display', 'none')
       screenLogic()
     }, 20)
-    //need to update viz here and remove participant
+    // need to update viz here and remove participant
   })
 
   $('#leaveRoomLink').click(function () {
