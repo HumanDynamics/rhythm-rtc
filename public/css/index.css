@@ -32,16 +32,24 @@ p {
 	border: 5px solid #555;
 	width:290px;
 	height:220px;
+	-o-transform : scaleX(-1);
+	-webkit-transform : scaleX(-1);
+	transform : scaleX(-1);
 }
 
 #overlay {
 	position : absolute;
 	left : 0;
 	top : 0;
-/*		/*Mirrors the video streams*/
+	padding: 0;
+	margin: 0;
+/*		/*Mirrors the overlay*/
 	transform: rotateY(180deg);
     -webkit-transform:rotateY(180deg); /* Safari and Chrome */
     -moz-transform:rotateY(180deg); /* Firefox */*/
+	-o-transform : scaleX(-1);
+    -webkit-transform : scaleX(-1);
+	transform : scaleX(-1);
 }
 
 #container {

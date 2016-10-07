@@ -16,7 +16,6 @@
       <div id="container"> <video id="box0" muted volume="0" width="290" height="220" ></video>
       <canvas id="overlay" width="300" height="230"></canvas>
       </div>
-      <input class="btn" type="button" value="wait, loading video" disabled="disabled" onclick="startVideo()" id="startbutton"></input>
       <video id="box1" style="visibility:hidden"></video>
       <video id="box2" style="visibility:hidden"></video>
       <video id="box3" style="visibility:hidden"></video>
@@ -30,48 +29,4 @@
   <script src="model_pca_20_svm.js"></script>
   <script src="Stats.js"></script>
   <script type="text/javascript" src="/js/main.js"></script>
- <script>
-   var vid = document.getElementById('box0');
-        var overlay = document.getElementById('overlay');
-        var overlayCC = overlay.getContext('2d');
-        
-        var ctrack = new clm.tracker({useWebGL : true});
-        ctrack.init(pModel);
-        
-        stats = new Stats();
-        stats.domElement.style.position = 'absolute';
-        stats.domElement.style.top = '0px';
-        document.getElementById('container').appendChild( stats.domElement );
-        
-        function enablestart() {
-          var startbutton = document.getElementById('startbutton');
-          startbutton.value = "start";
-          startbutton.disabled = null;
-        }
-
-        vid.addEventListener('canplay', enablestart, false);
-        
-        function startVideo() {
-          // start video
-          vid.play();
-          // start tracking
-          ctrack.start(vid);
-          // start loop to draw face
-          drawLoop();
-        }
-        
-        function drawLoop() {
-          requestAnimFrame(drawLoop);
-          overlayCC.clearRect(0, 0, 400, 300);
-          //psrElement.innerHTML = "score :" + ctrack.getScore().toFixed(4);
-          if (ctrack.getCurrentPosition()) {
-            ctrack.draw(overlay);
-          }
-        }
-        
-        // update stats on every iteration
-        document.addEventListener('clmtrackrIteration', function(event) {
-          stats.update();
-        }, false);
-  </script>
 </html>

@@ -5,7 +5,7 @@ const utils = require('./utils')
 const audio = require('./audio')
 const io = require('socket.io-client')
 const feathers = require('feathers-client')
-// const face = require('./face')
+const face = require('./face')
 
 var socket = io('https://rhythm-server.herokuapp.com', {
   'transports': [
@@ -74,6 +74,7 @@ function loginSuccess () {
   }).then(function (result) {
     console.log('meeting result:', result)
     audio.startProcessing($scope)
+    face.startTracking()
   })
 }
 
