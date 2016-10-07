@@ -27,8 +27,8 @@ this.height = height - this.margin.bottom - this.margin.top;
 this.radius = 115;
 this.data = data;
 this.angle = d3.scale.ordinal().domain(this.data.participants).rangePoints([0, 360], 1);
-this.linkStrokeScale = d3.scaleLinear().domain([0, 1]).range([3, 15]);
-this.sphereColorScale = d3.scaleLinear().domain([0, data.participants.length * 10 * 3]).range(['#C8E6C9', '#2E7D32']).clamp(true);
+this.linkStrokeScale = d3.scale.linear().domain([0, 1]).range([3, 15]);
+this.sphereColorScale = d3.scale.linear().domain([0, data.participants.length * 10 * 3]).range(['#C8E6C9', '#2E7D32']).clamp(true);
 this.nodes = (function() {
 var i, len, ref, results;
 ref = this.data.participants;

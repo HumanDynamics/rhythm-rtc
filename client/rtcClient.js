@@ -7,7 +7,7 @@ const viz = require('./charts')
 const io = require('socket.io-client')
 const feathers = require('feathers-client')
 
-var socket = io('https://rhythm-server.herokuapp.com', {
+var socket = io('rhythm-server.herokuapp.com', {
   'transports': [
     'websocket',
     'flashsocket',
@@ -55,9 +55,11 @@ function loginSuccess () {
   $scope.roomUsers.push({participant: easyrtc.myEasyrtcid, meeting: $scope.roomName})
   console.log($scope.roomUsers)
   app.authenticate({
-    type: 'local',
-    email: 'heroku-email',
-    password: 'heroku-password'
+      type: 'local',
+      email:"heroku-email",
+      password: "heroku-password"
+    // email: 'default-user-email',
+    // password: 'default-user-password'
   }).then(function (result) {
     console.log('auth result:', result)
     return socket.emit('meetingJoined', {

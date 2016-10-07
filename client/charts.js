@@ -1,4 +1,4 @@
-const MM = require('./mm.js')
+const MM = require('./mm_edit.js')
 const _ = require('underscore')
 const $ = require('jquery')
 
