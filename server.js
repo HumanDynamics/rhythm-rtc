@@ -12,8 +12,8 @@ browserify.settings.development('basedir', __dirname)
 app.get('/js/main.js', browserify('./client/main.js'))
 app.use(express.static(path.join(__dirname, '/public/')))
 
-var env = require('node-env-file');
-env(__dirname + '/.env');
+// var env = require('node-env-file');
+// env(__dirname + '/.env');
 
 var webServer = http.createServer(app).listen(process.env.PORT)
 
