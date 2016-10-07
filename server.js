@@ -22,8 +22,8 @@ var socketServer = io.listen(webServer, {'log level': 1})
 
 // magic server fix maybe?
 
-io.set('transports', ['xhr-polling'])
-io.set('polling duration', 10)
+socketServer.set('transports', ['xhr-polling'])
+socketServer.set('polling duration', 10)
 
 easyrtc.setOption('logLevel', 'debug')
 
