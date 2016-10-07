@@ -3,11 +3,10 @@ video {
 	max-width:300px;
 	max-height:250px;
 	padding:0;
-	display: inline-block;
-	/*Mirrors the video streams*/
+/*	/*Mirrors the video streams*/
 	transform: rotateY(180deg);
     -webkit-transform:rotateY(180deg); /* Safari and Chrome */
-    -moz-transform:rotateY(180deg); /* Firefox */
+    -moz-transform:rotateY(180deg); /* Firefox */*/
 }
 
 #wrapper{
@@ -35,6 +34,21 @@ p {
 	height:220px;
 }
 
+#overlay {
+	position : absolute;
+	left : 0;
+	top : 0;
+/*		/*Mirrors the video streams*/
+	transform: rotateY(180deg);
+    -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+    -moz-transform:rotateY(180deg); /* Firefox */*/
+}
+
+#container {
+	width:300px;
+	height: 230px;
+	position:relative;
+}
 
 a{
 	color:#E68308;

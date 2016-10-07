@@ -5,6 +5,7 @@ const utils = require('./utils')
 const audio = require('./audio')
 const io = require('socket.io-client')
 const feathers = require('feathers-client')
+// const face = require('./face')
 
 var socket = io('https://rhythm-server.herokuapp.com', {
   'transports': [
@@ -30,6 +31,7 @@ var $scope = {
 
 function callEverybodyElse (roomName, userList, selfInfo) {
   if ($scope.needToCallOtherUsers) {
+    face.startTracking()
     console.log('need to call other users:', userList)
     _.forEach(userList, (user) => {
       console.log('trying to call user:', user)
