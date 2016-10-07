@@ -20,11 +20,6 @@ var webServer = http.createServer(app).listen(process.env.PORT)
 // Start Socket.io so it attaches itself to Express server
 var socketServer = io.listen(webServer, {'log level': 1})
 
-// magic server fix maybe?
-
-socketServer.set('transports', ['xhr-polling'])
-socketServer.set('polling duration', 10)
-
 easyrtc.setOption('logLevel', 'debug')
 
 // Setting up ICE STUN/TURN servers
