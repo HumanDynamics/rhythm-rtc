@@ -7,7 +7,7 @@ const viz = require('./charts')
 const io = require('socket.io-client')
 const feathers = require('feathers-client')
 
-var socket = io('rhythm-server.herokuapp.com', {
+var socket = io(process.env.SERVER_URL, {
   'transports': [
     'websocket',
     'flashsocket',
