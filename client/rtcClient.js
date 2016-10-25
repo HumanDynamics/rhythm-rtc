@@ -6,7 +6,7 @@ const audio = require('./audio')
 const viz = require('./charts')
 const io = require('socket.io-client')
 const feathers = require('feathers-client')
-// const easyrtc = require('easyrtc')
+const easyrtc = require('easyrtc')
 
 console.log("connecting to rhythm server:", process.env.SERVER_URL)
 
