@@ -260,7 +260,6 @@
         "forwarded-for": "1.0.1",
         "fresh": "0.3.0",
         "fs-readdir-recursive": "0.1.2",
-        "fsevents": "1.0.14",
         "fs.realpath": "1.0.0",
         "function-bind": "1.1.0",
         "fusing": "1.0.0",
