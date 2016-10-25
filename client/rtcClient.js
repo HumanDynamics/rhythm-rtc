@@ -6,6 +6,9 @@ const audio = require('./audio')
 const viz = require('./charts')
 const io = require('socket.io-client')
 const feathers = require('feathers-client')
+// const easyrtc = require('easyrtc')
+
+console.log("connecting to rhythm server:", process.env.SERVER_URL)
 
 var socket = io(process.env.SERVER_URL, {
   'transports': [
@@ -56,8 +59,8 @@ function loginSuccess () {
   console.log($scope.roomUsers)
   app.authenticate({
       type: 'local',
-      email:"heroku-email",
-      password: "heroku-password"
+      email: process.env.RHYTHM_SERVER_EMAIL,
+      password: process.env.RHYTHM_SERVER_PASSWORD
     // email: 'default-user-email',
     // password: 'default-user-password'
   }).then(function (result) {

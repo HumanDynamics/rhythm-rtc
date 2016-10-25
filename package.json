@@ -15,6 +15,7 @@
     "domready": "^1.0.8",
     "dotenv": "^2.0.0",
     "easyrtc": "^1.0.15",
+    "envify": "^3.4.1",
     "express": "*",
     "feathers-client": "^1.5.1",
     "jquery": "^3.0.0",
