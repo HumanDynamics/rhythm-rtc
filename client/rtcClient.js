@@ -50,6 +50,7 @@ function callEverybodyElse (roomName, userList, selfInfo) {
 }
 
 function loginSuccess () {
+  face.startTracking()
   console.log('login successful')
   $scope.roomUsers.push({participant: easyrtc.myEasyrtcid, meeting: $scope.roomName})
   console.log($scope.roomUsers)
@@ -74,7 +75,6 @@ function loginSuccess () {
   }).then(function (result) {
     console.log('meeting result:', result)
     audio.startProcessing($scope)
-    face.startTracking()
   })
 }
 
