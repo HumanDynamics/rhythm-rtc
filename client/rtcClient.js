@@ -7,7 +7,7 @@ const io = require('socket.io-client')
 const feathers = require('feathers-client')
 const face = require('./face')
 
-var socket = io('https://rhythm-server.herokuapp.com', {
+var socket = io(process.env.SERVER_URL, {
   'transports': [
     'websocket',
     'flashsocket',
@@ -56,8 +56,8 @@ function loginSuccess () {
   console.log($scope.roomUsers)
   app.authenticate({
     type: 'local',
-    email: 'heroku-email',
-    password: 'heroku-password'
+    email: process.env.RHYTHM_SERVER_EMAIL,
+    password: process.env.RHYTHM_SERVER_PASSWORD
   }).then(function (result) {
     console.log('auth result:', result)
     return socket.emit('meetingJoined', {

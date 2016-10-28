@@ -31,11 +31,15 @@ function trackFace () {
       endPositions = positions
       endTime = new Date()
       for (var i = 0; i < startPositions.length; i++) {
-        deltaPositions.push([endPositions[i][0] - startPositions[i][0], endPositions[i][1] - startPositions[i][1]])
+        // deltaPositions.push([endPositions[i][0] - startPositions[i][0], endPositions[i][1] - startPositions[i][1]])
+        //find euclidean differences between start and end points and average that
+        deltaPositions.push(Math.sqrt(Math.pow(endPositions[i][0] - startPositions[i][0],2) + Math.pow(endPositions[i][1] - startPositions[i][1],2)))
       }
+      var faceDelta = deltaPositions.reduce(function(a, b) { return a + b; }) / deltaPositions.length
       console.log('start time:' + startTime.toISOString())
       console.log('end time:' + endTime.toISOString())
       console.log('delta positions array: ' + deltaPositions)
+      console.log('timedelta: ' + faceDelta)
     }, 5000)
   }, 10000)
 
