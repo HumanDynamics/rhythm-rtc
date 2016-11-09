@@ -5,7 +5,13 @@ const io = require('socket.io')
 const easyrtc = require('easyrtc')
 const path = require('path')
 const browserify = require('browserify-middleware')
+const envify = require('envify/custom')
+const twilio = require('twilio')
 const app = express()
+
+browserify.settings({
+  transform: ['envify']
+})
 
 browserify.settings.development('basedir', __dirname)
 app.get('/js/main.js', browserify('./client/main.js'))
@@ -19,18 +25,21 @@ var socketServer = io.listen(webServer, {'log level': 1})
 easyrtc.setOption('logLevel', 'debug')
 
 // Setting up ICE STUN/TURN servers
-// Currently using google STUN servers and no TURN servers
+// Currently using twilio STUN servers TURN servers
 
-var iceServers = [
-  {'url': 'stun:stun.l.google.com:19305'},
-  {'url1': 'stun:stun.l.google.com:19305'},
-  {'url2': 'stun:stun.l.google.com:19305'},
-  {'url3': 'stun:stun.l.google.com:19305'},
-  {'url4': 'stun:stun.l.google.com:19305'},
-  {'url': 'stun:stun.l.google.com:19305'}
-]
+// twilio api authentication
+var accountSid = process.env.TWILIO_ID
+var authToken = process.env.TWILIO_TOKEN
 
-easyrtc.setOption('appIceServers', iceServers)
+var client = new twilio.RestClient(accountSid, authToken)
+
+client.tokens.create({}, function (err, token) {
+  if (err) { console.log(err) }
+  var iceServers = token.ice_servers
+  console.log('twilio ice servers: ', iceServers)
+  console.log("started server on port:", process.env.PORT)
+  easyrtc.setOption('appIceServers', iceServers)
+})
 
 // Overriding the default easyrtcAuth listener, only so we can directly access its callback
 easyrtc.events.on('easyrtcAuth', function (socket, easyrtcid, msg, socketCallback, callback) {

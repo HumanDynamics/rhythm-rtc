@@ -1,26 +1,72 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Rhythm RTC</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=1">
-    <link rel="stylesheet" type="text/css" href="css/index.css" />
-  </head>
 
-  <body>
-    <div id="wrapper">
-      <h1>Rhythm RTC Chat</h1>
-      <h2 id="roomIndicator"></h2>
-      <a id="leaveRoomLink" style="visibility:hidden">Leave Room</a>
-      <div class="clear"></div>
-      <div id="div0" class="video"><video id="box0" muted volume="0" ></video><p id="box0Talk"></p></div>
-      <div id="div1" class="video"><video id="box1" style="visibility:hidden"></video><p id="box1Talk"></p></div>
-      <div id="div2" class="video"><video id="box2" style="visibility:hidden"></video><p id="box2Talk"></p></div>
-      <div id="div3" class="video"><video id="box3" style="visibility:hidden"></video><p id="box3Talk"></p></div>
-      <div id="div4" class="video"><video id="box4" style="visibility:hidden"></video><p id="box4Talk"></p></div>
-    </div>    
-  </body>
-  <script type="text/javascript" src="/easyrtc/easyrtc.js"></script>
-  <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-  <script type="text/javascript" src="/js/main.js"></script>
-</html>
+<!DOCTYPE html>
+  <html>
+    <head>
+      <!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+      <!-- Import custom CSS -->
+      <link type="text/css" rel="stylesheet" href="css/index.css"  media="screen,projection"/>
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <title>Chat | Rhythm RTC</title>
+    </head>
+
+    <body>
+
+  <nav class="light-blue lighten-1" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="" class="brand-logo">Rhythm</a>
+      <ul class="right hide-on-med-and-down">
+        <li><a id="leaveRoomLink" style="visibility:hidden">Leave Room</a></li>
+      </ul>
+
+      <ul id="nav-mobile" class="side-nav">
+        <li><a id="leaveRoomLink" style="visibility:hidden">Leave Room</a></li>
+      </ul>
+      <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+    </div>
+  </nav>
+
+      <main>
+
+      <div class="row">
+      <div class="col s3 center">
+      <video id="box0" class="responsive-video" muted volume="0" ></video>
+      <br>
+      <p id="roomIndicator"></p>
+      <br>
+      <div id="meeting-mediator"></div> 
+      </div>
+
+
+      <div class="col s9">
+      <div class="row">
+        <video id="box1" class="responsive-video remote col" style="display:none"></video>      
+        <video id="box2" class="responsive-video remote col" style="display:none"></video>
+        <video id="box2" class="responsive-video remote col" style="display:none"></video>
+        <video id="box3" class="responsive-video remote col" style="display:none"></video>
+        <video id="box4" class="responsive-video remote col" style="display:none"></video>
+      </div>
+
+      </div>
+      </div>
+      </main>
+
+      <footer class="page-footer orange darken-1">
+        <div class="footer-copyright">
+          <div class="container">
+          © 2016
+          <a class="grey-text text-lighten-4 right" href="http://rhythm.mit.edu">Rhythm</a>
+        </div> 
+        </div>    
+      </footer>
+
+      <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="/easyrtc/easyrtc.js"></script>
+      <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+      <script type="text/javascript" src="/js/main.js"></script>
+      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script type="text/javascript" src="materialize.min.js"></script>
+    </body>
+  </html>

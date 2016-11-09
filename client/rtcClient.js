@@ -3,10 +3,34 @@ const $ = require('jquery')
 const _ = require('lodash')
 const utils = require('./utils')
 const audio = require('./audio')
+const viz = require('./charts')
+const io = require('socket.io-client')
+const feathers = require('feathers-client')
+// const easyrtc = require('easyrtc')
+
+console.log("connecting to rhythm server:", process.env.SERVER_URL)
+
+var socket = io(process.env.SERVER_URL, {
+  'transports': [
+    'websocket',
+    'flashsocket',
+    'htmlfile',
+    'xhr-polling',
+    'jsonp-polling'
+  ]
+})
+
+const app = feathers()
+.configure(feathers.hooks())
+.configure(feathers.socketio(socket))
+.configure(feathers.authentication())
 
 var $scope = {
   roomName: null,
-  needToCallOtherUsers: true
+  roomUsers: [],
+  needToCallOtherUsers: true,
+  app: app,
+  screenSize: 0
 }
 
 function callEverybodyElse (roomName, userList, selfInfo) {
@@ -25,14 +49,37 @@ function callEverybodyElse (roomName, userList, selfInfo) {
       )
     })
     $scope.needToCallOtherUsers = false
+    screenLogic()
   }
 }
 
 function loginSuccess () {
   console.log('login successful')
-  $('#box0').on('playing', function () {
-    console.log('user box is playing...')
-    audio.startProcessingAudio()
+  $scope.roomUsers.push({participant: easyrtc.myEasyrtcid, meeting: $scope.roomName})
+  console.log($scope.roomUsers)
+  app.authenticate({
+      type: 'local',
+      email: process.env.RHYTHM_SERVER_EMAIL,
+      password: process.env.RHYTHM_SERVER_PASSWORD
+    // email: 'default-user-email',
+    // password: 'default-user-password'
+  }).then(function (result) {
+    console.log('auth result:', result)
+    return socket.emit('meetingJoined', {
+      participant: easyrtc.myEasyrtcid,
+      name: easyrtc.myEasyrtcid,
+      participants: $scope.roomUsers,
+      meeting: $scope.roomName,
+      meetingUrl: location.href,
+      consent: true,
+      consentDate: new Date().toISOString()
+    })
+  }).catch(function (err) {
+    console.log('ERROR:', err)
+  }).then(function (result) {
+    console.log('meeting result:', result)
+    audio.startProcessing($scope)
+    viz.startMM($scope)
   })
 }
 
@@ -53,22 +100,25 @@ function init () {
                   ['box1', 'box2', 'box3', 'box4'],
                   loginSuccess)
   joinRoom()
-
   easyrtc.setDisconnectListener(function () {
     easyrtc.showError('LOST-CONNECTION', 'Lost connection to signaling server')
   })
   easyrtc.setOnCall(function (easyrtcid, slot) {
     console.log('getConnection count=' + easyrtc.getConnectionCount())
-    $(getIdOfBox(slot + 1)).css('visibility', 'visible')
+    $scope.roomUsers.push({participant: easyrtcid, meeting: $scope.roomName})
+    $(getIdOfBox(slot + 1)).css('display', 'unset')
+    screenLogic()
+    viz.updateMM()
   })
   easyrtc.setOnHangup(function (easyrtcid, slot) {
     setTimeout(function () {
-      $(getIdOfBox(slot + 1)).css('visibility', 'hidden')
+      $(getIdOfBox(slot + 1)).css('display', 'none')
+      screenLogic()
     }, 20)
+    // need to update viz here and remove participant
   })
 
   $('#leaveRoomLink').click(function () {
-    // call roomLeave handler
     easyrtc.leaveRoom($scope.roomName, function () {
       location.assign(location.href.substring(0, location.href.indexOf('?')))
     })
@@ -90,6 +140,17 @@ function joinRoom () {
     $('#roomIndicator').html("Currently in room '" + $scope.roomName + "'")
     $('#leaveRoomLink').css('visibility', 'visible')
   }
+}
+
+function screenLogic () {
+  // this is the  function that controls the sizing of remote callers on screen
+  if ($scope.screenSize !== 0) {
+    $('.remote').removeClass('m' + $scope.screenSize)
+  }
+
+  var newSize = 12 / (easyrtc.getConnectionCount())
+  $('.remote').addClass('m' + newSize)
+  $scope.screenSize = newSize
 }
 
 module.exports = {
