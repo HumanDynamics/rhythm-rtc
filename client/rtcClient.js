@@ -6,9 +6,10 @@ const audio = require('./audio')
 const viz = require('./charts')
 const io = require('socket.io-client')
 const feathers = require('feathers-client')
+const cookie = require('js-cookie')
 // const easyrtc = require('easyrtc')
 
-console.log("connecting to rhythm server:", process.env.SERVER_URL)
+console.log('connecting to rhythm server:', process.env.SERVER_URL)
 
 var socket = io(process.env.SERVER_URL, {
   'transports': [
@@ -28,6 +29,7 @@ const app = feathers()
 var $scope = {
   roomName: null,
   roomUsers: [],
+  user: easyrtc.myEasyrtcid,
   needToCallOtherUsers: true,
   app: app,
   screenSize: 0
@@ -55,19 +57,28 @@ function callEverybodyElse (roomName, userList, selfInfo) {
 
 function loginSuccess () {
   console.log('login successful')
-  $scope.roomUsers.push({participant: easyrtc.myEasyrtcid, meeting: $scope.roomName})
+  $scope.roomUsers.push({participant: $scope.user, meeting: $scope.roomName})
   console.log($scope.roomUsers)
   app.authenticate({
-      type: 'local',
-      email: process.env.RHYTHM_SERVER_EMAIL,
-      password: process.env.RHYTHM_SERVER_PASSWORD
+    type: 'local',
+    email: process.env.RHYTHM_SERVER_EMAIL,
+    password: process.env.RHYTHM_SERVER_PASSWORD
     // email: 'default-user-email',
     // password: 'default-user-password'
   }).then(function (result) {
     console.log('auth result:', result)
+    // get or set user cookie!
+    var userCookie = cookie.get('rtcuser')
+    if (userCookie) {
+      $scope.user = userCookie
+      console.log('got old cookie')
+    } else {
+      cookie.set('rtcuser', easyrtc.myEasyrtcid, {expires: 1})
+      console.log('made new cookie')
+    }
     return socket.emit('meetingJoined', {
-      participant: easyrtc.myEasyrtcid,
-      name: easyrtc.myEasyrtcid,
+      participant: $scope.user,
+      name: $scope.user,
       participants: $scope.roomUsers,
       meeting: $scope.roomName,
       meetingUrl: location.href,

@@ -55,7 +55,7 @@ function start_meeting_mediator (scope) {
 
   var turns = $scope.app.service('turns')
   var participants = _.map($scope.roomUsers, function (p) {return p.participant})
-  var localParticipantId =  easyrtc.myEasyrtcid
+  var localParticipantId =  $scope.user
   console.log('MM participants:', participants)
   mm = new MM({participants: participants,
                transitions: 0,

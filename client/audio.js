@@ -12,7 +12,7 @@ function processAudio (scope) {
   speakingEvents.bind('stoppedSpeaking', function (data) {
     scope.app.service('utterances').create(
       {
-        'participant': easyrtc.myEasyrtcid,
+        'participant': scope.user,
         'meeting': scope.roomName,
         'startTime': data.start.toISOString(),
         'endTime': data.end.toISOString()
