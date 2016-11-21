@@ -26,23 +26,23 @@ function transform_turns(participants, turns) {
 
 // update MM turns if it matches this hangout.
 function maybe_update_mm_turns(data) {
-  console.log("mm data turns:", data);
+  console.log("mm data turns:", data)
   //
   if (data.meeting == $scope.roomName) {
     mm.updateData({participants: mm.data.participants,
                    transitions: data.transitions,
-                   turns: transform_turns(mm.data.participants, data.turns)});
+                   turns: transform_turns(mm.data.participants, data.turns)})
   }
 }
 
 // update MM participants if it matches this hangout.
 // removes the local participants from the list.
-function maybe_update_mm_participants(participantsChangedEvent) {
-  console.log('maybe updating mm partcipants...', participantsChangedEvent)
-  var participants = _.map($scope.roomUsers, function (p) {return p.participant})
+function maybe_update_mm_participants(scope) {
+  console.log('maybe updating mm partcipants...')
+  var participants = _.map(scope.roomUsers, function (p) { return p.participant })
   mm.updateData({participants: participants,
                  transitions: mm.data.transitions,
-                 turns: mm.data.turns});
+                 turns: mm.data.turns})
 }
 
 function start_meeting_mediator (scope) {

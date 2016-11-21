@@ -29,7 +29,7 @@ const app = feathers()
 var $scope = {
   roomName: null,
   roomUsers: [],
-  user: easyrtc.myEasyrtcid,
+  user: "",
   needToCallOtherUsers: true,
   app: app,
   screenSize: 0
@@ -57,25 +57,25 @@ function callEverybodyElse (roomName, userList, selfInfo) {
 
 function loginSuccess () {
   console.log('login successful')
+  // get or set user cookie!
+  var userCookie = cookie.get('rtcuser')
+  if (userCookie) {
+    $scope.user = userCookie
+    console.log('got old cookie')
+  } else {
+    cookie.set('rtcuser', easyrtc.myEasyrtcid, {expires: 1})
+    console.log('made new cookie', cookie.get('rtcuser'))
+    $scope.user = easyrtc.myEasyrtcid
+  }
+  console.log('$scope.user', $scope.user)
   $scope.roomUsers.push({participant: $scope.user, meeting: $scope.roomName})
   console.log($scope.roomUsers)
   app.authenticate({
     type: 'local',
     email: process.env.RHYTHM_SERVER_EMAIL,
     password: process.env.RHYTHM_SERVER_PASSWORD
-    // email: 'default-user-email',
-    // password: 'default-user-password'
   }).then(function (result) {
     console.log('auth result:', result)
-    // get or set user cookie!
-    var userCookie = cookie.get('rtcuser')
-    if (userCookie) {
-      $scope.user = userCookie
-      console.log('got old cookie')
-    } else {
-      cookie.set('rtcuser', easyrtc.myEasyrtcid, {expires: 1})
-      console.log('made new cookie')
-    }
     return socket.emit('meetingJoined', {
       participant: $scope.user,
       name: $scope.user,
@@ -117,16 +117,20 @@ function init () {
   easyrtc.setOnCall(function (easyrtcid, slot) {
     console.log('getConnection count=' + easyrtc.getConnectionCount())
     $scope.roomUsers.push({participant: easyrtcid, meeting: $scope.roomName})
+    console.log('called ', $scope.roomUsers)
     $(getIdOfBox(slot + 1)).css('display', 'unset')
     screenLogic()
-    viz.updateMM()
+    viz.updateMM($scope)
   })
   easyrtc.setOnHangup(function (easyrtcid, slot) {
     setTimeout(function () {
       $(getIdOfBox(slot + 1)).css('display', 'none')
       screenLogic()
+      // need to update viz here and remove participant
+      _.remove($scope.roomUsers, function (user) { return user.participant === easyrtcid })
+      console.log('removed something? ', $scope.roomUsers)
+      viz.updateMM($scope)
     }, 20)
-    // need to update viz here and remove participant
   })
 
   $('#leaveRoomLink').click(function () {
