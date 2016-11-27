@@ -7,6 +7,7 @@ const viz = require('./charts')
 const io = require('socket.io-client')
 const feathers = require('feathers-client')
 const cookie = require('js-cookie')
+const face = require('./face')
 // const easyrtc = require('easyrtc')
 
 console.log('connecting to rhythm server:', process.env.SERVER_URL)
@@ -91,6 +92,7 @@ function loginSuccess () {
     console.log('meeting result:', result)
     audio.startProcessing($scope)
     viz.startMM($scope)
+    face.startTracking($scope)
   })
 }
 

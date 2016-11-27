@@ -545,6 +545,7 @@
     "text-table": "0.2.0",
     "through": "2.3.8",
     "through2": "1.1.1",
+    "thumos": "^1.0.0",
     "timers-browserify": "1.4.2",
     "tinycolor": "0.0.1",
     "to-array": "0.1.4",

@@ -1,45 +1,15 @@
-/* global clm pModel Stats requestAnimFrame*/
-function trackFace () {
-  var vid = document.getElementById('box0')
-  var overlay = document.getElementById('overlay')
-  var overlayCC = overlay.getContext('2d')
+const Thumos = require('thumos')
 
-  var ctrack = new clm.tracker({useWebGL: true})
-  ctrack.init(pModel)
+function trackFace (scope) {
 
-  var stats = new Stats()
-  stats.domElement.style.position = 'absolute'
-  stats.domElement.style.top = '0px'
-  document.getElementById('container').appendChild(stats.domElement)
+  console.log("starting to track facial movement!");
 
-  // start video
-  vid.play()
-  // start tracking
-  ctrack.start(vid)
-  // start loop to draw face
-  drawLoop()
-  // print position data to console
-  positionLoop()
+  var faceEvents = new Thumos('box0','videoOverlay',true)
+  faceEvents.bind('faceMoving', function (data) {
+    console.log('face movement event is being emitted!!!')
+    $('#data').html('<b>data:</b> <br> <br>start: ' + data.start.toISOString() + '<br>end: ' + data.end.toISOString() + '<br>delta_average: ' + data.delta)
+  })
 
-  function drawLoop () {
-    requestAnimFrame(drawLoop)
-    overlayCC.clearRect(0, 0, 400, 300)
-    // psrElement.innerHTML = "score :" + ctrack.getScore().toFixed(4)
-    if (ctrack.getCurrentPosition()) {
-      ctrack.draw(overlay)
-    }
-  }
-
-  function positionLoop () {
-    requestAnimFrame(positionLoop)
-    var positions = ctrack.getCurrentPosition()
-    console.log('positions array: ' + positions)
-  }
-
-  // update stats on every iteration
-  document.addEventListener('clmtrackrIteration', function (event) {
-    stats.update()
-  }, false)
 }
 module.exports = {
   startTracking: trackFace

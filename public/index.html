@@ -32,17 +32,20 @@
 
       <div class="row">
       <div class="col s3 center">
-      <video id="box0" class="responsive-video" muted volume="0" ></video>
+      <div id="videoWrapper" class="responsive-video">
+      <video id="box0" class="responsive-video" muted volume="0" width="237" height="180"></video>
+      <canvas id="videoOverlay"></canvas>
+      </div>
       <br>
       <p id="roomIndicator"></p>
       <br>
-      <div id="meeting-mediator"></div> 
+      <div id="meeting-mediator"></div>
       </div>
 
 
       <div class="col s9">
       <div class="row">
-        <video id="box1" class="responsive-video remote col" style="display:none"></video>      
+        <video id="box1" class="responsive-video remote col" style="display:none"></video>
         <video id="box2" class="responsive-video remote col" style="display:none"></video>
         <video id="box2" class="responsive-video remote col" style="display:none"></video>
         <video id="box3" class="responsive-video remote col" style="display:none"></video>
@@ -58,8 +61,8 @@
           <div class="container">
           © 2016
           <a class="grey-text text-lighten-4 right" href="http://rhythm.mit.edu">Rhythm</a>
-        </div> 
-        </div>    
+        </div>
+        </div>
       </footer>
 
       <!--Import jQuery before materialize.js-->
