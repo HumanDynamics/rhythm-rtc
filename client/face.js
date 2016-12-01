@@ -6,8 +6,21 @@ function trackFace (scope) {
 
   var faceEvents = new Thumos('box0','videoOverlay',true)
   faceEvents.bind('faceMoving', function (data) {
-    console.log('face movement event is being emitted!!!')
-    $('#data').html('<b>data:</b> <br> <br>start: ' + data.start.toISOString() + '<br>end: ' + data.end.toISOString() + '<br>delta_average: ' + data.delta)
+    scope.app.service('faces').create(
+      {
+        'participant': scope.user,
+        'meeting': scope.roomName,
+        'timestamp': data.now.toISOString(),
+        'start_time': data.start.toISOString(),
+        'end_time': data.end.toISOString(),
+        'face_delta': data.delta,
+        'delta_array': data.array
+      }).then(function (res) {
+        console.log('face movement event is being emitted!!!')
+        // console.log('Face moved!', 'start:', data.start, 'end:', data.end, 'now:' data.now, 'delta average:' data.delta, 'delta arrays:' data.array)
+      }).catch(function (err) {
+        console.log('ERROR:', err)
+      })
   })
 
 }
