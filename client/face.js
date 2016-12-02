@@ -16,8 +16,7 @@ function trackFace (scope) {
         'face_delta': data.delta,
         'delta_array': data.array
       }).then(function (res) {
-        console.log('face movement event is being emitted!!!')
-        // console.log('Face moved!', 'start:', data.start, 'end:', data.end, 'now:' data.now, 'delta average:' data.delta, 'delta arrays:' data.array)
+        console.log('face movement event is being emitted!!!', res)
       }).catch(function (err) {
         console.log('ERROR:', err)
       })
