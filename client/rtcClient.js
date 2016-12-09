@@ -6,6 +6,8 @@ const audio = require('./audio')
 const viz = require('./charts')
 const io = require('socket.io-client')
 const feathers = require('feathers-client')
+const qs = require('query-string')
+
 // const easyrtc = require('easyrtc')
 
 console.log("connecting to rhythm server:", process.env.SERVER_URL)
@@ -27,6 +29,7 @@ const app = feathers()
 
 var $scope = {
   roomName: null,
+  localUser: null,
   roomUsers: [],
   needToCallOtherUsers: true,
   app: app,
@@ -55,6 +58,8 @@ function callEverybodyElse (roomName, userList, selfInfo) {
 
 function loginSuccess () {
   console.log('login successful')
+  //query url for a possible dev participant param
+  participantQuery = qs.parse(location.search)['user']
   $scope.roomUsers.push({participant: easyrtc.myEasyrtcid, meeting: $scope.roomName})
   console.log($scope.roomUsers)
   app.authenticate({
@@ -95,11 +100,11 @@ function init () {
     $scope.needToCallOtherUsers = true
   })
   easyrtc.setRoomOccupantListener(callEverybodyElse)
+  joinRoom()
   easyrtc.easyApp('rhythm.party',
                   'box0',
                   ['box1', 'box2', 'box3', 'box4'],
                   loginSuccess)
-  joinRoom()
   easyrtc.setDisconnectListener(function () {
     easyrtc.showError('LOST-CONNECTION', 'Lost connection to signaling server')
   })
@@ -126,8 +131,8 @@ function init () {
 }
 
 function joinRoom () {
-  $scope.roomName = utils.getParam('room')
-  if ($scope.roomName === null || $scope.roomName === '' || $scope.roomName === 'null') {
+  $scope.roomName = qs.parse(location.search)['room']
+  if ($scope.roomName === null || $scope.roomName === '' || $scope.roomName === 'null' || typeof $scope.roomName == 'undefined') {
     $scope.roomName = prompt('enter room name:')
     if (location.href.indexOf('?room=') === -1) {
       location.assign(location.href + '?room=' + $scope.roomName)
