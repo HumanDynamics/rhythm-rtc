@@ -1,27 +1,25 @@
+ body {
+     display: flex;
+     min-height: 100vh;
+     flex-direction: column;
+ }
+
+ main {
+     flex: 1 0 auto;
+ }
+
 video {
 	vertical-align:top;
-	max-width:300px;
-	max-height:250px;
 	padding:0;
 	display: inline-block;
 	/*Mirrors the video streams*/
 	transform: rotateY(180deg);
     -webkit-transform:rotateY(180deg); /* Safari and Chrome */
     -moz-transform:rotateY(180deg); /* Firefox */
+    -o-transform : scaleX(-1);
+    -webkit-transform : scaleX(-1);
+  transform : scaleX(-1);
 }
-
-#wrapper{
-	width:950px;
-	margin:0 auto;
-	padding:0;
-	text-align: center;
-	font-family: Helvetica, Arial;
-}
-
-.clear {
-	width:950px;
-}
-
 
 p {
 	padding:0;
@@ -30,11 +28,45 @@ p {
 }
 
 #box0 {
+	/*margin-top:25px;
+	margin-bottom: 10px;*/
 	border: 5px solid #555;
-	width:290px;
-	height:220px;
+	width:237px;
+	height:180px;
 }
 
+#videoWrapper {
+  margin-top:30px;
+	margin-bottom: 15px;
+  margin-left: auto;
+  margin-right:auto;
+  width:237px;
+  height: 180px;
+  position: relative;
+}
+
+#videoOverlay {
+  position: absolute;
+  left : 0;
+  top : 0;
+  padding: 0;
+  margin:5px;
+	width:227px;
+	height:170px;
+
+   /*Mirrors the overlay*/
+  transform: rotateY(180deg);
+  -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+  -moz-transform:rotateY(180deg); /* Firefox */
+  -o-transform : scaleX(-1);
+  -webkit-transform : scaleX(-1);
+  transform : scaleX(-1);
+}
+
+.remote{
+	margin-top: 25px;
+	height:100%;
+}
 
 a{
 	color:#E68308;

@@ -5,8 +5,13 @@ const io = require('socket.io')
 const easyrtc = require('easyrtc')
 const path = require('path')
 const browserify = require('browserify-middleware')
+const envify = require('envify/custom')
 const twilio = require('twilio')
 const app = express()
+
+browserify.settings({
+  transform: ['envify']
+})
 
 browserify.settings.development('basedir', __dirname)
 app.get('/js/main.js', browserify('./client/main.js'))
@@ -32,6 +37,7 @@ client.tokens.create({}, function (err, token) {
   if (err) { console.log(err) }
   var iceServers = token.ice_servers
   console.log('twilio ice servers: ', iceServers)
+  console.log("started server on port:", process.env.PORT)
   easyrtc.setOption('appIceServers', iceServers)
 })
 
