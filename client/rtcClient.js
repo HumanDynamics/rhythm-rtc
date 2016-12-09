@@ -6,9 +6,11 @@ const audio = require('./audio')
 const viz = require('./charts')
 const io = require('socket.io-client')
 const feathers = require('feathers-client')
+const qs = require('query-string')
+const cookie = require('js-cookie')
 // const easyrtc = require('easyrtc')
 
-console.log("connecting to rhythm server:", process.env.SERVER_URL)
+console.log('connecting to rhythm server:', process.env.SERVER_URL)
 
 var socket = io(process.env.SERVER_URL, {
   'transports': [
@@ -27,7 +29,9 @@ const app = feathers()
 
 var $scope = {
   roomName: null,
+  localUser: null,
   roomUsers: [],
+  user: "",
   needToCallOtherUsers: true,
   app: app,
   screenSize: 0
@@ -55,19 +59,35 @@ function callEverybodyElse (roomName, userList, selfInfo) {
 
 function loginSuccess () {
   console.log('login successful')
-  $scope.roomUsers.push({participant: easyrtc.myEasyrtcid, meeting: $scope.roomName})
+  //query url for a possible dev participant param
+  participantQuery = qs.parse(location.search)['user']
+  if(typeof participantQuery != 'undefined'){
+    $scope.user = participantQuery
+  }
+  else{
+    // get or set user cookie!
+    var userCookie = cookie.get('rtcuser')
+    if (userCookie) {
+      $scope.user = userCookie
+      console.log('got old cookie')
+    } else {
+      cookie.set('rtcuser', easyrtc.myEasyrtcid, {expires: 30})
+      console.log('made new cookie', cookie.get('rtcuser'))
+      $scope.user = easyrtc.myEasyrtcid
+    }
+  }
+  console.log('$scope.user', $scope.user)
+  $scope.roomUsers.push({participant: $scope.user, meeting: $scope.roomName})
   console.log($scope.roomUsers)
   app.authenticate({
-      type: 'local',
-      email: process.env.RHYTHM_SERVER_EMAIL,
-      password: process.env.RHYTHM_SERVER_PASSWORD
-    // email: 'default-user-email',
-    // password: 'default-user-password'
+    type: 'local',
+    email: process.env.RHYTHM_SERVER_EMAIL,
+    password: process.env.RHYTHM_SERVER_PASSWORD
   }).then(function (result) {
     console.log('auth result:', result)
     return socket.emit('meetingJoined', {
-      participant: easyrtc.myEasyrtcid,
-      name: easyrtc.myEasyrtcid,
+      participant: $scope.user,
+      name: $scope.user,
       participants: $scope.roomUsers,
       meeting: $scope.roomName,
       meetingUrl: location.href,
@@ -95,27 +115,31 @@ function init () {
     $scope.needToCallOtherUsers = true
   })
   easyrtc.setRoomOccupantListener(callEverybodyElse)
+  joinRoom()
   easyrtc.easyApp('rhythm.party',
                   'box0',
                   ['box1', 'box2', 'box3', 'box4'],
                   loginSuccess)
-  joinRoom()
   easyrtc.setDisconnectListener(function () {
     easyrtc.showError('LOST-CONNECTION', 'Lost connection to signaling server')
   })
   easyrtc.setOnCall(function (easyrtcid, slot) {
     console.log('getConnection count=' + easyrtc.getConnectionCount())
     $scope.roomUsers.push({participant: easyrtcid, meeting: $scope.roomName})
+    console.log('called ', $scope.roomUsers)
     $(getIdOfBox(slot + 1)).css('display', 'unset')
     screenLogic()
-    viz.updateMM()
+    viz.updateMM($scope)
   })
   easyrtc.setOnHangup(function (easyrtcid, slot) {
     setTimeout(function () {
       $(getIdOfBox(slot + 1)).css('display', 'none')
       screenLogic()
+      // need to update viz here and remove participant
+      _.remove($scope.roomUsers, function (user) { return user.participant === easyrtcid })
+      console.log('removed something? ', $scope.roomUsers)
+      viz.updateMM($scope)
     }, 20)
-    // need to update viz here and remove participant
   })
 
   $('#leaveRoomLink').click(function () {
@@ -126,8 +150,8 @@ function init () {
 }
 
 function joinRoom () {
-  $scope.roomName = utils.getParam('room')
-  if ($scope.roomName === null || $scope.roomName === '' || $scope.roomName === 'null') {
+  $scope.roomName = qs.parse(location.search)['room']
+  if ($scope.roomName === null || $scope.roomName === '' || $scope.roomName === 'null' || typeof $scope.roomName == 'undefined') {
     $scope.roomName = prompt('enter room name:')
     if (location.href.indexOf('?room=') === -1) {
       location.assign(location.href + '?room=' + $scope.roomName)
