@@ -61,16 +61,20 @@ function loginSuccess () {
   console.log('login successful')
   //query url for a possible dev participant param
   participantQuery = qs.parse(location.search)['user']
-  $scope.roomUsers.push({participant: easyrtc.myEasyrtcid, meeting: $scope.roomName})
-  // get or set user cookie!
-  var userCookie = cookie.get('rtcuser')
-  if (userCookie) {
-    $scope.user = userCookie
-    console.log('got old cookie')
-  } else {
-    cookie.set('rtcuser', easyrtc.myEasyrtcid, {expires: 30})
-    console.log('made new cookie', cookie.get('rtcuser'))
-    $scope.user = easyrtc.myEasyrtcid
+  if(typeof participantQuery != 'undefined'){
+    $scope.user = participantQuery
+  }
+  else{
+    // get or set user cookie!
+    var userCookie = cookie.get('rtcuser')
+    if (userCookie) {
+      $scope.user = userCookie
+      console.log('got old cookie')
+    } else {
+      cookie.set('rtcuser', easyrtc.myEasyrtcid, {expires: 30})
+      console.log('made new cookie', cookie.get('rtcuser'))
+      $scope.user = easyrtc.myEasyrtcid
+    }
   }
   console.log('$scope.user', $scope.user)
   $scope.roomUsers.push({participant: $scope.user, meeting: $scope.roomName})
