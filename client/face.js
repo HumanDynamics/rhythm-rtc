@@ -4,7 +4,7 @@ function trackFace (scope) {
 
   console.log("starting to track facial movement!");
 
-  var faceEvents = new Thumos('box0','videoOverlay',true)
+  var faceEvents = new Thumos('box0','videoOverlay')
   faceEvents.bind('faceMoving', function (data) {
     scope.app.service('faces').create(
       {
