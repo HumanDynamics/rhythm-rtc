@@ -8,6 +8,7 @@ const browserify = require('browserify-middleware')
 const envify = require('envify/custom')
 const twilio = require('twilio')
 const app = express()
+const cors = require('cors')
 
 browserify.settings({
   transform: ['envify']
@@ -29,6 +30,7 @@ var allowCrossDomain = function(req, res, next) {
 }
 
 browserify.settings.development('basedir', __dirname)
+app.use(cors)
 app.use(allowCrossDomain)
 app.get('/js/main.js', browserify('./client/main.js'))
 app.use(express.static(path.join(__dirname, '/public/')))
