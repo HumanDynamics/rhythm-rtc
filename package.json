@@ -147,6 +147,7 @@
     "cookie-signature": "1.0.6",
     "core-js": "2.4.1",
     "core-util-is": "1.0.2",
+    "cors": "^2.8.1",
     "create-ecdh": "4.0.0",
     "create-hash": "1.1.2",
     "create-hmac": "1.1.4",
