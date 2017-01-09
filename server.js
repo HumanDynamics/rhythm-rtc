@@ -14,9 +14,10 @@ browserify.settings({
 })
 
 browserify.settings.development('basedir', __dirname)
+app.use(allowCrossDomain)
 app.get('/js/main.js', browserify('./client/main.js'))
 app.use(express.static(path.join(__dirname, '/public/')))
-app.use(allowCrossDomain)
+
 
 var webServer = http.createServer(app).listen(process.env.PORT)
 
