@@ -13,11 +13,25 @@ browserify.settings({
   transform: ['envify']
 })
 
+
+var allowCrossDomain = function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With')
+
+  // intercept OPTIONS method
+  if ('OPTIONS' == req.method) {
+    res.send(200)
+  }
+  else {
+    next()
+  }
+}
+
 browserify.settings.development('basedir', __dirname)
 app.use(allowCrossDomain)
 app.get('/js/main.js', browserify('./client/main.js'))
 app.use(express.static(path.join(__dirname, '/public/')))
-
 
 var webServer = http.createServer(app).listen(process.env.PORT)
 
@@ -80,16 +94,3 @@ easyrtc.listen(app, socketServer, null, function (err, rtcRef) {
 })
 
 
-var allowCrossDomain = function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-
-  // intercept OPTIONS method
-  if ('OPTIONS' == req.method) {
-    res.send(200);
-  }
-  else {
-    next();
-  }
-};
