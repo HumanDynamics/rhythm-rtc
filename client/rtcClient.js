@@ -3,7 +3,6 @@ const $ = require('jquery')
 const _ = require('lodash')
 const utils = require('./utils')
 const audio = require('./audio')
-const viz = require('./charts')
 const io = require('socket.io-client')
 const feathers = require('feathers-client')
 const qs = require('query-string')
@@ -99,7 +98,6 @@ function loginSuccess () {
   }).then(function (result) {
     console.log('meeting result:', result)
     audio.startProcessing($scope)
-    viz.startMM($scope)
   })
 }
 
@@ -109,6 +107,7 @@ function getIdOfBox (boxNum) {
 
 function init () {
   console.log('initializing RTC client...')
+  easyrtc.setSocketUrl(':8083')
   easyrtc.dontAddCloseButtons()
   easyrtc.setRoomEntryListener(function (entry, roomName) {
     console.log('entered room!')
@@ -129,7 +128,7 @@ function init () {
     console.log('called ', $scope.roomUsers)
     $(getIdOfBox(slot + 1)).css('display', 'unset')
     screenLogic()
-    viz.updateMM($scope)
+//    viz.updateMM($scope)
   })
   easyrtc.setOnHangup(function (easyrtcid, slot) {
     setTimeout(function () {
@@ -138,7 +137,7 @@ function init () {
       // need to update viz here and remove participant
       _.remove($scope.roomUsers, function (user) { return user.participant === easyrtcid })
       console.log('removed something? ', $scope.roomUsers)
-      viz.updateMM($scope)
+//      viz.updateMM($scope)
     }, 20)
   })
 

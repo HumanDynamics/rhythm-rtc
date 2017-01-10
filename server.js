@@ -16,6 +16,7 @@ browserify.settings({
 browserify.settings.development('basedir', __dirname)
 app.get('/js/main.js', browserify('./client/main.js'))
 app.use(express.static(path.join(__dirname, '/public/')))
+app.use(express.static(path.join(__dirname, '/node_modules/')))
 
 var webServer = http.createServer(app).listen(process.env.PORT)
 
@@ -64,7 +65,7 @@ easyrtc.events.on('roomJoin', function (connectionObj, roomName, roomParameter, 
 })
 
 // Start EasyRTC server
-easyrtc.listen(app, socketServer, null, function (err, rtcRef) {
+easyrtc.listen(app, socketServer, {logLevel: 'Debug'}, function (err, rtcRef) {
   if (err) {
     console.log('err:', err)
   }
