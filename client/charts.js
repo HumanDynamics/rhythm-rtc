@@ -64,7 +64,7 @@ function start_meeting_mediator (scope) {
               mm_width,
               mm_height)
   mm.render('#meeting-mediator');
-  turns.on("created", maybe_update_mm_turns);
+  turns.on("updated", maybe_update_mm_turns);
 }
 
  module.exports = {
