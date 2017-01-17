@@ -1,4 +1,4 @@
-const MM = require('./mm_edit.js')
+const MM = require('./mm.coffee').MeetingMediator
 const _ = require('underscore')
 const $ = require('jquery')
 
@@ -57,9 +57,11 @@ function start_meeting_mediator (scope) {
   var participants = _.map($scope.roomUsers, function (p) {return p.participant})
   var localParticipantId =  $scope.user
   console.log('MM participants:', participants)
+  console.log("meeting mediator:", MM)
   mm = new MM({participants: participants,
                transitions: 0,
-               turns: []},
+               turns: [],
+               names: ['', '', '', '', '']},
               localParticipantId,
               mm_width,
               mm_height)

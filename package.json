@@ -120,6 +120,7 @@
     "cliui": "2.1.0",
     "clone": "1.0.2",
     "code-point-at": "1.0.0",
+    "coffeeify": "^2.1.0",
     "color": "0.8.0",
     "color-convert": "0.5.3",
     "color-name": "1.1.1",

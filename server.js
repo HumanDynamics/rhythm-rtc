@@ -9,15 +9,21 @@ const envify = require('envify/custom')
 const twilio = require('twilio')
 const app = express()
 const cors = require('cors')
+const coffeeify = require('coffeeify')
 
-browserify.settings({
-  transform: ['envify']
-})
+// browserify.settings({
+//   transform: ['envify', 'coffeeify'],
+//   extensions: ['.coffee']
+// })
+
+var bundle = browserify('./client/main.js',
+                        {transform: ['envify', 'coffeeify'],
+                         extensions: ['.coffee']})
 
 
-browserify.settings.development('basedir', __dirname)
+//browserify.settings.development('basedir', __dirname)
 app.use(cors())
-app.get('/js/main.js', browserify('./client/main.js'))
+app.get('/js/main.js', bundle)
 app.use(express.static(path.join(__dirname, '/public/')))
 
 var webServer = http.createServer(app).listen(process.env.PORT)

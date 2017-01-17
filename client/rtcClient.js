@@ -62,7 +62,7 @@ function loginSuccess () {
   var userCookie = cookie.get('rtcuser')
   if (userCookie) {
     $scope.user = userCookie
-    console.log('got old cookie')
+    console.log('got old cookie, user is:', $scope.user)
   } else {
     cookie.set('rtcuser', easyrtc.myEasyrtcid, {expires: 30})
     console.log('made new cookie', cookie.get('rtcuser'))
