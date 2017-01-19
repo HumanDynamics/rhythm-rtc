@@ -7,10 +7,10 @@
   _ = require('underscore')
 
   module.exports.MeetingMediator = class MM
-    constructor: (data, localParticipant, width, height) ->
+    constructor: (data, localParticipants, width, height) ->
 
       console.log "constructing MM with data:", data
-      @localParticipant = localParticipant
+      @localParticipants = localParticipants
       @fontFamily = "Futura,Helvetica Neue,Helvetica,Arial,sans-serif"
       @margin = {top: 0, right: 0, bottom: 0, left: 0}
       @width = width - @margin.right - @margin.left
@@ -113,7 +113,7 @@
         .attr "class", "nodeFill"
         .attr "fill", "#FFFFFF"
         .attr "r", (d) =>
-          if (d.participant == 'energy' or d.participant == @localParticipant)
+          if (d.participant == 'energy' or _.contains(@localParticipants, d.participant))
             0
           else
             @nodeRadius(d) - 3
@@ -128,7 +128,7 @@
           else
             "rotate(" + (-1 * (@constantRotationAngle() + @angle(d.participant))) + ")"
         .attr "fill", (d) =>
-          if (d.participant == @localParticipant)
+          if (_.contains(@localParticipants, d.participant))
             "#FFFFFF"
           else
             "#000000"
@@ -146,7 +146,7 @@
     nodeColor: (d) =>
       if (d.participant == 'energy')
         @sphereColorScale(@data.transitions)
-      else if d.participant == @localParticipant
+      else if _.contains(@localParticipants, d.participant)
         '#092070'
       else
         '#3AC4C5'
@@ -229,7 +229,8 @@
     # "graph group" to keep the user's node at the top.
     constantRotationAngle: () =>
       mod = (a, n) -> a - Math.floor(a/n) * n
-      angle = @angle(@localParticipant) || 0
+      # TODO unsure about this
+      angle = @angle(@localParticipants[0]) || 0
       targetAngle = -90
       a = targetAngle - angle
       a = (a + 180) % 360 - 180

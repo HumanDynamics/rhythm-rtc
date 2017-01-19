@@ -1,5 +1,6 @@
 /* global easyrtc location prompt*/
 const $ = require('jquery')
+const domready = require('domready')
 const _ = require('lodash')
 const utils = require('./utils')
 const audio = require('./audio')
@@ -30,10 +31,12 @@ const app = feathers()
 var $scope = {
   roomName: null,
   roomUsers: [],
-  user: "",
+  user: '',
   needToCallOtherUsers: true,
+  badgeUsers: [],
   app: app,
-  screenSize: 0
+  screenSize: 0,
+  multiple: false
 }
 
 function callEverybodyElse (roomName, userList, selfInfo) {
@@ -68,9 +71,16 @@ function loginSuccess () {
     console.log('made new cookie', cookie.get('rtcuser'))
     $scope.user = easyrtc.myEasyrtcid
   }
+
+
   console.log('$scope.user', $scope.user)
-  $scope.roomUsers.push({participant: $scope.user, meeting: $scope.roomName})
+  if (!window.multiple) {
+    $scope.roomUsers.push({participant: $scope.user, meeting: $scope.roomName})
+  }
   console.log($scope.roomUsers)
+
+
+
   app.authenticate({
     type: 'local',
     email: process.env.RHYTHM_SERVER_EMAIL,
@@ -89,10 +99,17 @@ function loginSuccess () {
   }).catch(function (err) {
     console.log('ERROR:', err)
   }).then(function (result) {
-    console.log('meeting result:', result)
-    audio.startProcessing($scope)
-    viz.startMM($scope)
-    face.startTracking($scope)
+
+    // don't do the normal stuff if we have multiple people
+    if (window.multiple) {
+      console.log("multiple users at this endpoint!")
+      viz.startMM($scope)
+      return
+    } else {
+      audio.startProcessing($scope)
+      viz.startMM($scope)
+      face.startTracking($scope)
+    }
   })
 }
 
@@ -102,6 +119,7 @@ function getIdOfBox (boxNum) {
 
 function init () {
   console.log('initializing RTC client...')
+
   easyrtc.dontAddCloseButtons()
   easyrtc.setRoomEntryListener(function (entry, roomName) {
     console.log('entered room!')
@@ -122,7 +140,7 @@ function init () {
     console.log('called ', $scope.roomUsers)
     $(getIdOfBox(slot + 1)).css('display', 'unset')
     screenLogic()
-    viz.updateMM($scope)
+    //viz.updateMM($scope)
   })
   easyrtc.setOnHangup(function (easyrtcid, slot) {
     setTimeout(function () {
@@ -131,7 +149,7 @@ function init () {
       // need to update viz here and remove participant
       _.remove($scope.roomUsers, function (user) { return user.participant === easyrtcid })
       console.log('removed something? ', $scope.roomUsers)
-      viz.updateMM($scope)
+      //viz.updateMM($scope)
     }, 20)
   })
 

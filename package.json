@@ -11,6 +11,20 @@
   "engines": {
     "node": ">=0.8"
   },
+  "postinstall": "cp node_modules/materialize-css/js/date_picker/picker.js node_modules/materialize-css/bin/picker.js",
+"browser": {
+  "jquery": "./node_modules/jquery/dist/jquery.js",
+  "materialize": "./node_modules/materialize-css/bin/materialize.js"
+},
+"browserify-shim": {
+  "jquery": "$",
+  "materialize": "materialize"
+},
+"browserify": {
+  "transform": [
+    "browserify-shim"
+  ]
+},
   "dependencies": {
     "Base64": "0.2.1",
     "JSONStream": "1.1.3",

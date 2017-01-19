@@ -28,7 +28,25 @@
     </div>
   </nav>
 
-      <main>
+  <main>
+      <!-- Modal Structure -->
+      <div id="startModal" class="modal">
+          <div class="modal-content text-center">
+              <h4>Are there multiple people on your end? </h4>
+              <form action="#">
+                  <p>
+                      <input type="checkbox" class="filled-in" id="multiple-checkbox"/>
+                      <label for="multiple-checkbox">Yes, there are multiple people over here</label>
+                  </p>
+              </form>
+              <p>meeting ID:</p>
+             <h3 id="meeting-id"></h3>
+              <p>If there aren't, go ahead and start the meeting!</p>
+          </div>
+          <div class="modal-footer">
+              <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Ready</a>
+          </div>
+      </div>
 
       <div class="row">
       <div class="col s3 center">
@@ -66,10 +84,13 @@
       </footer>
 
       <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
       <script type="text/javascript" src="/easyrtc/easyrtc.js"></script>
       <script type="text/javascript" src="/socket.io/socket.io.js"></script>
-      <script type="text/javascript" src="/js/main.js"></script>
-      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
       <script type="text/javascript" src="materialize.min.js"></script>
+      <script type="text/javascript" src="/js/main.js"></script>
+
+
+
     </body>
   </html>
