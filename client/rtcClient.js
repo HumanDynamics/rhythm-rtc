@@ -3,6 +3,7 @@ const $ = require('jquery')
 const _ = require('lodash')
 const utils = require('./utils')
 const audio = require('./audio')
+const face = require('./face')
 const io = require('socket.io-client')
 const feathers = require('feathers-client')
 const qs = require('query-string')
@@ -98,6 +99,7 @@ function loginSuccess () {
   }).then(function (result) {
     console.log('meeting result:', result)
     audio.startProcessing($scope)
+    face.startTracking($scope)
   })
 }
 
